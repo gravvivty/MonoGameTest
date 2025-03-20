@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>E:/GAME_DEV/MonoGame/uni/Project1/Content/hm_1.png</File>
+    <File>E:/GAME_DEV/MonoGame/uni/Project1/Content/Bridge_Wood-export.png</File>
+    <File>E:/GAME_DEV/MonoGame/uni/Project1/Content/Cliff_Tile-export.png</File>
+    <File>E:/GAME_DEV/MonoGame/uni/Project1/Content/world.ldtk</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
