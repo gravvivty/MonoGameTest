@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EEe1uMSCdnc=",
+  "dgSpecHash": "ok2i8csUIBg=",
   "success": true,
-  "projectFilePath": "E:\\GAME_DEV\\MonoGame\\uni\\Project1\\Project1.csproj",
+  "projectFilePath": "C:\\Users\\Steven.HOME\\source\\repos\\MonoGameTest\\Project1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Steven.HOME\\.nuget\\packages\\assimpnet\\4.1.0\\assimpnet.4.1.0.nupkg.sha512",
     "C:\\Users\\Steven.HOME\\.nuget\\packages\\autofac\\5.2.0\\autofac.5.2.0.nupkg.sha512",

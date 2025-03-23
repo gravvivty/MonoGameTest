@@ -28,6 +28,10 @@ namespace Project1
         private List<Rectangle> collisions;
         private Rectangle playerRect;
 
+        //Camera
+        private Matrix _translation;
+
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -35,8 +39,9 @@ namespace Project1
             IsMouseVisible = true;
 
             // Window Size
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
         }
 
@@ -88,7 +93,7 @@ namespace Project1
                     }
                     cells++;
                 }
-                
+
             }
         }
 
@@ -125,13 +130,18 @@ namespace Project1
             if (!IsColliding(tentativePos))
                 playerPosition.Y = tentativePos.Y;
 
+            //Translation Matrix
+            float zoom = 4.0f;
+            _translation = Matrix.CreateTranslation(-playerPosition.X, -playerPosition.Y, 0) *  // Move world relative to player
+                           Matrix.CreateScale(zoom, zoom, 1.0f) *  // Apply zoom
+                           Matrix.CreateTranslation(_graphics.PreferredBackBufferWidth / 2f, _graphics.PreferredBackBufferHeight / 2f, 0); // Re-center screen
             base.Update(gameTime);
         }
 
         private bool IsColliding(Vector2 pos)
         {
             // Player's bounding rectangle in level space
-            playerRect = new Rectangle((int)pos.X+playerTexture.Width/2, (int)pos.Y+(playerTexture.Height-5), playerTexture.Width/4, playerTexture.Height/10);
+            playerRect = new Rectangle((int)pos.X + playerTexture.Width / 2, (int)pos.Y + (playerTexture.Height - 5), playerTexture.Width / 4, playerTexture.Height / 10);
             foreach (var rect in collisions)
             {
                 if (playerRect.Intersects(rect))
@@ -153,24 +163,25 @@ namespace Project1
             int levelHeight = level.PxHei;
 
             // Calculate a uniform scale to fit the level into the window.
+            /*
             float scaleX = (float)_graphics.PreferredBackBufferWidth / levelWidth;
             float scaleY = (float)_graphics.PreferredBackBufferHeight / levelHeight;
             float finalScale = Math.Min(scaleX, scaleY);
+            Matrix transform = Matrix.CreateScale(finalScale);
+            */
 
             // Create a scale transform
-            Matrix transform = Matrix.CreateScale(finalScale);
-            _spriteBatch.Begin(transformMatrix: transform, samplerState: SamplerState.PointClamp);
+            _spriteBatch.Begin(transformMatrix: _translation, samplerState: SamplerState.PointClamp);
 
+            renderer.RenderPrerenderedLevel(level);
+            _spriteBatch.Draw(playerTexture, playerRect, Color.Blue);
+            _spriteBatch.Draw(playerTexture, playerPosition, Color.White);
+            foreach (var rect in collisions)
             {
-                renderer.RenderPrerenderedLevel(level);
-                _spriteBatch.Draw(playerTexture, playerRect, Color.Blue);
-                _spriteBatch.Draw(playerTexture, playerPosition, Color.White);
-                foreach (var rect in collisions)
-                {
-                    _spriteBatch.Draw(playerTexture, rect, Color.Red);
-                }
+                _spriteBatch.Draw(playerTexture, rect, Color.Red);
             }
-            
+
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
