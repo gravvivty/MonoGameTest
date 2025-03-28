@@ -1,0 +1,5 @@
+.vscode/
+.idea/
+Content/obj/
+Content/bin/
+Release/
