@@ -12,6 +12,7 @@ public class SpriteManager
 {
     // Maps a TileIDs to the EnumTag - what TileID belongs to which Sprite
     private Dictionary<string, List<int>> tileMappings = new Dictionary<string, List<int>>();
+    // Maps all the tiles with matching Enum - also saves the Position and ID of those tiles
     private Dictionary<string, Dictionary<int, Vector2>> tileGroups = new Dictionary<string, Dictionary<int, Vector2>>();
 
     public SpriteManager()
@@ -38,13 +39,81 @@ public class SpriteManager
                             if (!tileMappings.ContainsKey(enumTag.EnumValueId))
                             {
                                 tileMappings[enumTag.EnumValueId] = new List<int>();
+                                tileGroups[enumTag.EnumValueId] = new Dictionary<int, Vector2>();
                             }
                             tileMappings[enumTag.EnumValueId].AddRange(enumTag.TileIds);
+
+                            foreach (var tileID in enumTag.TileIds)
+                            {
+                                Vector2 tilePosition = GetTileWorldPosition(tileID);
+                                tileGroups[enumTag.EnumValueId][tileID] = tilePosition;
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    private Vector2 GetTileWorldPosition(int tileID)
+    {
+        // Go through all levels
+        foreach (var level in Globals.World.Levels)
+        {
+            // Go through all layers
+            foreach (var layer in level.LayerInstances)
+            {
+                // Check if it is a Tiles layer
+                if (layer._Type == LayerType.Tiles)
+                {
+                    // Go through all gridTiles
+                    foreach (var gridTile in layer.GridTiles)
+                    {
+                        // Check if tileIDs match
+                        if (gridTile.T == tileID)
+                        {
+                            // there is a matching Tile with ID at X,Y
+                            return new Vector2(gridTile.Px.X, gridTile.Px.Y);
+                        }
+                    }
+                }
+            }
+        }
+        // No matching tile with ID
+        return new Vector2(0, 0);
+    }
+
+    private int GetAnchorTile(string enumName)
+    {
+        // Select the correct anchor Tile depending on Sprite
+        int anchorID = 0;
+        switch (enumName)
+        {
+            case "House":
+                anchorID = 324;
+                break;
+            case "Tree_Big":
+                anchorID = 264;
+                break;
+            case "Tree_Small":
+                anchorID = 237;
+                break;
+            case "Lantern":
+                anchorID = 213;
+                break;
+            case "Stump":
+                anchorID = 81;
+                break;
+            case "Fence_Big":
+                anchorID = 10;
+                break;
+            case "Log":
+                anchorID = 241;
+                break;
+            default:
+                break;
+        }
+        return anchorID;
     }
 
     // TODO:
@@ -57,5 +126,6 @@ public class SpriteManager
     // --> probably will need a new Map where the actual on map coordinates of the Tiles are stored with EnumTag
     // private Dictionary<string, Dictionary<int, Vector2>> tileGroups = new Dictionary<string, Dictionary<int, Vector2>>();
     // TileIDs with pos are stored in Globals.World.Levels[0].GridTiles
-    // Change ExampleRenderer Class if needed
+    // I imported ExampleRender Class into Renderer
+    // Change RenderPrerenderedLevel at the bottom of Renderer to adjust Depth and rendering changes
 }
