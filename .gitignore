@@ -6,3 +6,6 @@ obj/
 Content/obj/
 Content/bin/
 Release/
+./bin/*
+./obj/*
+./.vs/*
