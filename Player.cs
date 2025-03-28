@@ -18,6 +18,7 @@ namespace SWEN_Game
         {
             texture = Globals.Content.Load<Texture2D>("hm_1");
             speed = 150f;
+            // Spawn Pos
             position = new Vector2(50, 50);
         }
 

@@ -12,6 +12,7 @@ namespace SWEN_Game
 {
     public class Renderer
     {
+        // Default Renderer from NuGet
         private ExampleRenderer _renderer;
         private Player _player;
         private SpriteManager _spriteManager;
@@ -27,97 +28,53 @@ namespace SWEN_Game
 
         public void drawWorld()
         {
-            Globals.SpriteBatch.Begin(
-                sortMode: SpriteSortMode.FrontToBack,
-                transformMatrix: calcTranslation(),
-                samplerState: SamplerState.PointClamp);
+            // Apply Matrix for correct Zoom, Recentering and moving world around player
+            Globals.SpriteBatch.Begin(transformMatrix: calcTranslation(), samplerState: SamplerState.PointClamp);
 
             var level = Globals.World.Levels[0];
+            // Draw prerendered Level
+            _renderer.RenderPrerenderedLevel(level);
+            // Draw Player
+            Globals.SpriteBatch.Draw(_player.texture, _player.position, Color.White);
 
-            foreach (var layer in level.LayerInstances)
+            // Visual Rectangle Player Collision -> copied this from Globals.isColliding for consistency
+            Rectangle entityRect = new Rectangle((int)_player.position.X + _player.texture.Width / 2 - 2, 
+                (int)_player.position.Y + _player.texture.Height-3, _player.texture.Width / 4, _player.texture.Height / 15);
+
+            Globals.SpriteBatch.Draw(_player.texture, entityRect, Color.Green);
+
+            // Draws all the collisions to the screen
+            /*foreach (var rect in Globals.Collisions)
             {
-                // If this layer is specifically the "Background" layer, we’ll force it behind everything
-                bool isBackground = layer._Identifier == "Background";
-                if (layer._TilesetRelPath == null) continue;
-
-                Texture2D tilesetTexture = GetTilesetTextureFromRenderer(level, layer._TilesetRelPath);
-
-                foreach (var tile in layer.GridTiles)
-                {
-                    Vector2 position = new Vector2(tile.Px.X + layer._PxTotalOffsetX,
-                        tile.Px.Y + layer._PxTotalOffsetY);
-                    Rectangle srcRect = new Rectangle(tile.Src.X, tile.Src.Y, layer._GridSize, layer._GridSize);
-
-                    if (isBackground)
-                    {
-                        // Draw the background tiles with a forced depth of 0 (which is behind anything > 0).
-                        _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, 0f);
-                    }
-                    else
-                    {
-                        // Normal tile depth calculation
-                        _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position);
-                    }
-                }
-            }
-
-            // Draw the player
-            _spriteManager.DrawPlayer(Globals.SpriteBatch, _player.texture, _player.position);
-
-            // TODO: Collision rectangle LOL FIX GL
-            Rectangle entityRect = new Rectangle(
-                (int)_player.position.X + _player.texture.Width / 2 - 2,
-                (int)_player.position.Y + _player.texture.Height - 3,
-                _player.texture.Width / 4,
-                _player.texture.Height / 15);
-
-            float collisionDepth = _spriteManager.GetDepth(new Vector2(entityRect.X, entityRect.Y), entityRect.Height);
-            Globals.SpriteBatch.Draw(_player.texture, entityRect, null, Color.Green, 0f, Vector2.Zero,
-                SpriteEffects.None, collisionDepth);
+                Globals.SpriteBatch.Draw(_player.texture, rect, Color.Red);
+            }*/
 
             Globals.SpriteBatch.End();
-        }
-
-
-        // Helper method to retrieve the tileset texture using ExampleRenderer logic.
-        private Texture2D GetTilesetTextureFromRenderer(LDtkLevel level, string tilesetPath)
-        {
-            if (Globals.Content == null)
-            {
-                string directory = System.IO.Path.GetDirectoryName(level.WorldFilePath)!;
-                string assetName = System.IO.Path.Join(directory, tilesetPath);
-                return Texture2D.FromFile(Globals.Graphics.GraphicsDevice, assetName);
-            }
-            else
-            {
-                string file = System.IO.Path.ChangeExtension(tilesetPath, null);
-                string directory = System.IO.Path.GetDirectoryName(level.WorldFilePath)!;
-                string assetName = System.IO.Path.Join(directory, file);
-                return Globals.Content.Load<Texture2D>(assetName);
-            }
         }
 
         public void SetZoom(float newZoom)
         {
             zoom = newZoom;
         }
-
         private Matrix calcTranslation()
         {
-            return Matrix.CreateTranslation(-_player.position.X, -_player.position.Y, 0) *
-                   Matrix.CreateScale(zoom, zoom, 1f) *
-                   Matrix.CreateTranslation(
-                       Globals.Graphics.PreferredBackBufferWidth / 2f - _player.texture.Width * 3,
-                       Globals.Graphics.PreferredBackBufferHeight / 2f - _player.texture.Height,
-                       0);
+            // Moves world * creates zoom * centers player
+            Matrix translation;
+            translation = Matrix.CreateTranslation(-_player.position.X, -_player.position.Y, 0) *
+                Matrix.CreateScale(this.zoom, this.zoom, 1f) *
+                Matrix.CreateTranslation(Globals.Graphics.PreferredBackBufferWidth / 2f - _player.texture.Width*3,
+                Globals.Graphics.PreferredBackBufferHeight / 2f - _player.texture.Height, 0);
+            return translation;
         }
 
         private void RenderInit()
         {
             foreach (LDtkLevel level in Globals.World.Levels)
             {
+                // Prerender the Level whatever that means xdd
                 _renderer.PrerenderLevel(level);
             }
         }
     }
 }
+

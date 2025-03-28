@@ -39,6 +39,7 @@ namespace SWEN_Game
 
         protected override void LoadContent()
         {
+            // Create neccessary classes and set Global Values
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Globals.SpriteBatch = _spriteBatch;
             Globals.Content = Content;
@@ -57,6 +58,7 @@ namespace SWEN_Game
                 Exit();
 
             // TODO: Add your update logic here
+            // Update 
             _gameManager.Update();
             Globals.UpdateTime(gameTime);
 

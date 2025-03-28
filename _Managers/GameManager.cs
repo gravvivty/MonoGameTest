@@ -15,10 +15,12 @@ namespace SWEN_Game
             _player = new Player();
             _spriteManager = new SpriteManager();
             _renderer = new Renderer(_player, _spriteManager);
+            // Calculates ALL collisions in the level
             Globals.calculateAllCollisions();
         }
         public void Update()
         {
+            // Every Frame check input
             InputManager.manageInput(_player);
         }
         public void Draw()
