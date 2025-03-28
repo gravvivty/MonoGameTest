@@ -14,13 +14,13 @@ namespace SWEN_Game
     {
         private ExampleRenderer _renderer;
         private Player _player;
+        private SpriteManager _spriteManager;
         public float zoom { get; private set; } = 4f;
-        // Maps a TileIDs to the EnumTag - what TileID belongs to which Sprite
-        private Dictionary<string, List<int>> tileMappings = new Dictionary<string, List<int>>();
 
-        public Renderer(Player player)
+        public Renderer(Player player, SpriteManager spriteManager)
         {
             _player = player;
+            _spriteManager = spriteManager;
             _renderer = new ExampleRenderer(Globals.SpriteBatch, Globals.Content);
             RenderInit();
         }
@@ -34,7 +34,7 @@ namespace SWEN_Game
 
             // Draw collisions and player collision
             Rectangle entityRect = new Rectangle((int)_player.position.X + _player.texture.Width / 2 - 2, 
-                (int)_player.position.Y + _player.texture.Height-5, _player.texture.Width / 4, _player.texture.Height / 15);
+                (int)_player.position.Y + _player.texture.Height-3, _player.texture.Width / 4, _player.texture.Height / 15);
             /*foreach (var rect in Globals.Collisions)
             {
                 Globals.SpriteBatch.Draw(_player.texture, rect, Color.Red);
@@ -58,38 +58,12 @@ namespace SWEN_Game
             return translation;
         }
 
-        private void mapTileToTexture()
-        {
-            foreach (var item in Globals.File.Defs.Enums[0].Values)
-            {
-                string enumID = item.Id; // ID House, Tree_Big, etc.
-                foreach (var tileset in Globals.File.Defs.Tilesets)
-                {
-                    if (tileset.EnumTags != null)
-                    {
-                        foreach (var enumTag in tileset.EnumTags)
-                        {
-                            if (enumTag.EnumValueId == enumID)
-                            {
-                                if (!tileMappings.ContainsKey(enumTag.EnumValueId))
-                                {
-                                    tileMappings[enumTag.EnumValueId] = new List<int>();
-                                }
-                                tileMappings[enumTag.EnumValueId].AddRange(enumTag.TileIds);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         private void RenderInit()
         {
             foreach (LDtkLevel level in Globals.World.Levels)
             {
                 _renderer.PrerenderLevel(level);
             }
-            mapTileToTexture();
         }
     }
 }

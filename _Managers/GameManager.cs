@@ -8,11 +8,13 @@ namespace SWEN_Game
     {
         private readonly Player _player;
         private readonly Renderer _renderer;
+        private readonly SpriteManager _spriteManager;
 
         public GameManager()
         {
             _player = new Player();
-            _renderer = new Renderer(_player);
+            _spriteManager = new SpriteManager();
+            _renderer = new Renderer(_player, _spriteManager);
             Globals.calculateAllCollisions();
         }
         public void Update()

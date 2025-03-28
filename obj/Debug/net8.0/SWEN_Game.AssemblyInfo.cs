@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SWEN_Game")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0e86aefd6298ca6c401458573f34cde87e91f5ef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f1b33082ea7405ed93421431ef78d7ae831f2a0c")]
 [assembly: System.Reflection.AssemblyProductAttribute("SWEN_Game")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SWEN_Game")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

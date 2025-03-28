@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Steven.HOME/source/repos/MonoGameTest/Content/world.ldtk</SourceFile>
+  <SourceFile>E:/GAME_DEV/MonoGame/uni/MainGame/SWEN_Game/SWEN_Game/Content/world.ldtk</SourceFile>
   <SourceTime>2025-03-28T16:51:09.6481232+01:00</SourceTime>
-  <DestFile>C:/Users/Steven.HOME/source/repos/MonoGameTest/Content/bin/DesktopGL/Content/world.xnb</DestFile>
-  <DestTime>2025-03-28T17:44:28.3538681+01:00</DestTime>
+  <DestFile>E:/GAME_DEV/MonoGame/uni/MainGame/SWEN_Game/SWEN_Game/Content/bin/DesktopGL/Content/world.xnb</DestFile>
+  <DestTime>2025-03-28T17:37:02.0798494+01:00</DestTime>
   <Importer>LDtkFileImporter</Importer>
   <ImporterTime>2024-10-14T20:38:54+02:00</ImporterTime>
   <Processor>LDtkFileProcessor</Processor>

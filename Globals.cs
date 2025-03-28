@@ -52,7 +52,7 @@ namespace SWEN_Game
         public static bool isColliding(Vector2 pos, Texture2D texture)
         {
             Rectangle entityRect = new Rectangle((int)pos.X + texture.Width / 2 - 2,
-                (int)pos.Y + texture.Height - 5, texture.Width / 4, texture.Height / 10);
+                (int)pos.Y + texture.Height - 3, texture.Width / 4, texture.Height / 15);
             foreach (var rect in Collisions)
             {
                 if (entityRect.Intersects(rect))

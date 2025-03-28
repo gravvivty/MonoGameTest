@@ -4,10 +4,10 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Steven.HOME/source/repos/MonoGameTest/Content/hm_1.png</File>
-    <File>C:/Users/Steven.HOME/source/repos/MonoGameTest/Content/Bridge_Wood-export.png</File>
-    <File>C:/Users/Steven.HOME/source/repos/MonoGameTest/Content/Cliff_Tile-export.png</File>
-    <File>C:/Users/Steven.HOME/source/repos/MonoGameTest/Content/world.ldtk</File>
+    <File>E:/GAME_DEV/MonoGame/uni/MainGame/SWEN_Game/SWEN_Game/Content/hm_1.png</File>
+    <File>E:/GAME_DEV/MonoGame/uni/MainGame/SWEN_Game/SWEN_Game/Content/Bridge_Wood-export.png</File>
+    <File>E:/GAME_DEV/MonoGame/uni/MainGame/SWEN_Game/SWEN_Game/Content/Cliff_Tile-export.png</File>
+    <File>E:/GAME_DEV/MonoGame/uni/MainGame/SWEN_Game/SWEN_Game/Content/world.ldtk</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
