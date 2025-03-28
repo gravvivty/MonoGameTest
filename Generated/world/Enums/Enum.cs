@@ -5,12 +5,12 @@ namespace LDtkTypes;
 #pragma warning disable
 public enum Enum
 {
-    Solid,
-    Grass,
-    Path,
-    Sand,
-    Wood,
-    Leafs,
-    Water,
+    House,
+    Tree_Big,
+    Tree_Small,
+    Lantern,
+    Stump,
+    Fence_Big,
+    Log,
 }
 #pragma warning restore

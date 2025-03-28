@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\..\.nuget\packages\ldtkmonogame.contentpipeline\1.6.0\lib\net8.0\LDtk.ContentPipeline.dll
+/reference:C:\Users\Steven.HOME\.nuget\packages\ldtkmonogame.contentpipeline\1.6.0\lib\net8.0\LDtk.ContentPipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 

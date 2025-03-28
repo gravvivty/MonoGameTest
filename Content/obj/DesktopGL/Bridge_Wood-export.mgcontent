@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>E:/GAME_DEV/MonoGame/uni/Project1/Content/Bridge_Wood-export.png</SourceFile>
+  <SourceFile>E:/GAME_DEV/MonoGame/uni/MainGame/SWEN_Game/SWEN_Game/Content/Bridge_Wood-export.png</SourceFile>
   <SourceTime>2025-03-19T17:25:50.8829164+01:00</SourceTime>
-  <DestFile>E:/GAME_DEV/MonoGame/uni/Project1/Content/bin/DesktopGL/Bridge_Wood-export.xnb</DestFile>
-  <DestTime>2025-03-20T13:40:31.6362396+01:00</DestTime>
+  <DestFile>E:/GAME_DEV/MonoGame/uni/MainGame/SWEN_Game/SWEN_Game/Content/bin/DesktopGL/Bridge_Wood-export.xnb</DestFile>
+  <DestTime>2025-03-28T02:11:58.5311287+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2024-08-16T19:05:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

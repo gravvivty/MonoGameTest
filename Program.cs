@@ -1,2 +1,2 @@
-﻿using var game = new Project1.Game1();
+﻿using var game = new SWEN_Game.MainGame();
 game.Run();
