@@ -9,7 +9,7 @@ namespace SWEN_Game
 {
     public class Renderer
     {
-        private static float CHECK_DEPTH_RADIUS = 100f;
+        private static float CHECK_DEPTH_RADIUS = 150f;
 
         private ExampleRenderer _renderer;
         private Player _player;
@@ -20,7 +20,6 @@ namespace SWEN_Game
         {
             _player = player;
             _spriteManager = spriteManager;
-            RenderInit();
         }
 
         /// <summary>
@@ -32,15 +31,15 @@ namespace SWEN_Game
         /// </remarks>
         public void drawWorld()
         {
-            // Precompute anchor depths for sprite groups within a specific radius around the player.
-            // This groups tiles by their EnumTag and uses the nearest anchor tile's Y value for consistent depth.
-            var anchorDepths = SpriteGroupAnchorCalculation(CHECK_DEPTH_RADIUS);
-
             // Begin the sprite batch with depth sorting (FrontToBack) and apply the camera transformation.
             Globals.SpriteBatch.Begin(
                 SpriteSortMode.FrontToBack,
                 transformMatrix: calcTranslation(),
                 samplerState: SamplerState.PointClamp);
+
+            // Precompute anchor depths for sprite groups within a specific radius around the player.
+            // This groups tiles by their EnumTag and uses the nearest anchor tile's Y value for consistent depth.
+            var anchorDepths = SpriteGroupAnchorCalculation(CHECK_DEPTH_RADIUS);
 
             // Get the current level and mapping between EnumTags and tile IDs.
             var level = Globals.World.Levels[0];
@@ -100,19 +99,28 @@ namespace SWEN_Game
 
             // Draw the player's collision box for debugging, using a pink overlay.
             Rectangle entityRect = new Rectangle(
-                (int)_player.position.X + _player.texture.Width / 2 - 2,
-                (int)_player.position.Y + _player.texture.Height - 3,
+                (int)_player.position.X + _player.texture.Width/2-2,
+                (int)_player.position.Y + _player.texture.Height-3,
                 _player.texture.Width / 4,
                 _player.texture.Height / 15);
             Globals.SpriteBatch.Draw(_player.texture, entityRect, null, Color.Pink, 0f, Vector2.Zero,
                 SpriteEffects.None, 1f);
 
             // Draw any collision areas in red.
-            foreach (var collision in Globals.Collisions)
+            /*foreach (var collision in Globals.Collisions)
             {
                 Globals.SpriteBatch.Draw(_player.texture, collision, null, Color.Red, 0f, new Vector2(0, 0),
                     SpriteEffects.None, 1f);
-            }
+            }*/
+
+            // Draw Player Position/Rectangle
+            Rectangle posRect = new Rectangle(
+                (int)_player.realPos.X,
+                (int)_player.realPos.Y,
+                _player.texture.Width / 4,
+                _player.texture.Height / 15);
+            Globals.SpriteBatch.Draw(_player.texture, posRect, null, Color.Blue, 0f, Vector2.Zero,
+                SpriteEffects.None, 1f);
 
             // End the sprite batch.
             Globals.SpriteBatch.End();
@@ -151,12 +159,16 @@ namespace SWEN_Game
                 // Find the anchor tile occurrence that is closest to the player.
                 foreach (var anchorPos in group[anchorID])
                 {
-                    float dist = Vector2.Distance(anchorPos, _player.position);
+                    float dist = Vector2.Distance(anchorPos, _player.realPos);
                     if (dist < minDist)
                     {
                         minDist = dist;
                         bestAnchorPos = anchorPos;
+
                     }
+                    // Draw Anchor Tiles
+                    /*Globals.SpriteBatch.Draw(_player.texture, new Rectangle((int)anchorPos.X, (int)anchorPos.Y, 16, 16), null, Color.Red, 0f, new Vector2(0, 0),
+                SpriteEffects.None, 1f);*/
                 }
 
                 // If the closest anchor is within the specified radius, compute its depth and assign it to the sprite group.
@@ -202,10 +214,6 @@ namespace SWEN_Game
                        Globals.Graphics.PreferredBackBufferWidth / 2f - _player.texture.Width * 3,
                        Globals.Graphics.PreferredBackBufferHeight / 2f - _player.texture.Height,
                        0);
-        }
-
-        private void RenderInit()
-        {
         }
     }
 }

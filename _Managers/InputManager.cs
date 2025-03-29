@@ -26,17 +26,21 @@ namespace SWEN_Game
 
             // X - Move Player if not colliding otherwise do not update Pos
             Vector2 tentativePosition = player.position;
+            Vector2 tentativePositionReal = player.realPos;
             tentativePosition.X += moveDirection.X * player.speed * delta;
+            tentativePositionReal.X += moveDirection.X * player.speed* delta;
             if (!Globals.isColliding(tentativePosition, player.texture))
             {
-                player.SetPosition(tentativePosition);
+                player.SetPosition(tentativePosition, tentativePositionReal);
             }
             // Same thing but for Y
             tentativePosition = player.position;
+            tentativePositionReal = player.realPos;
             tentativePosition.Y += moveDirection.Y * player.speed * delta;
+            tentativePositionReal.Y += moveDirection.Y * player.speed * delta;
             if (!Globals.isColliding(tentativePosition, player.texture))
             {
-                player.SetPosition(tentativePosition);
+                player.SetPosition(tentativePosition, tentativePositionReal);
             }
         }
     }

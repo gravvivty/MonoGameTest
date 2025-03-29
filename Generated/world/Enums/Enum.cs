@@ -12,5 +12,6 @@ public enum Enum
     Stump,
     Fence_Big,
     Log,
+    Bridge,
 }
 #pragma warning restore

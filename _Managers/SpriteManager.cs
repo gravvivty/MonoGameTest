@@ -57,17 +57,16 @@ public class SpriteManager
                             // Get correct WorldPos
                             foreach (var tileID in enumTag.TileIds)
                             {
-                                Vector2 tilePosition = GetTileWorldPosition(tileID, enumTag.EnumValueId);
+                                List<Vector2> tilePositions = GetTileWorldPosition(tileID, enumTag.EnumValueId);
                                 // New Key if (e.g. "House", 130 doesnt exist)
                                 if (!tileGroups[enumTag.EnumValueId].ContainsKey(tileID))
                                 {
                                     tileGroups[enumTag.EnumValueId][tileID] = new List<Vector2>();
                                 }
 
-                                // Check if Vector is invalid
-                                if (tilePosition != invalid)
+                                foreach (var pos in tilePositions)
                                 {
-                                    tileGroups[enumTag.EnumValueId][tileID].Add(tilePosition);
+                                    tileGroups[enumTag.EnumValueId][tileID].Add(pos);
                                 }
                             }
                         }
@@ -77,8 +76,9 @@ public class SpriteManager
         }
     }
 
-    private Vector2 GetTileWorldPosition(int tileID, string enumTag)
+    private List<Vector2> GetTileWorldPosition(int tileID, string enumTag)
     {
+        List<Vector2> positions = new List<Vector2>();
         // Go through all levels
         foreach (var level in Globals.World.Levels)
         {
@@ -96,15 +96,7 @@ public class SpriteManager
                         {
                             // If Tile with EnumTag, ID and same coords exists --> dont return - iterate again
                             Vector2 tilePos = new Vector2(gridTile.Px.X, gridTile.Px.Y);
-                            if (tileGroups.ContainsKey(enumTag) && tileGroups[enumTag].ContainsKey(tileID)
-                                                                && tileGroups[enumTag][tileID].Contains(tilePos))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                return tilePos;
-                            }
+                            positions.Add(tilePos);
                         }
                     }
                 }
@@ -112,7 +104,7 @@ public class SpriteManager
         }
 
         // No matching tile with ID
-        return new Vector2(-1, -1);
+        return positions;
     }
 
     public int GetAnchorTileID(string enumName)
@@ -141,6 +133,9 @@ public class SpriteManager
                 break;
             case "Log":
                 anchorID = 241;
+                break;
+            case "Bridge":
+                anchorID = 32;
                 break;
             default:
                 break;
