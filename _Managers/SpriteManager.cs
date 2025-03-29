@@ -83,7 +83,7 @@ public class SpriteManager
         return new Vector2(0, 0);
     }
 
-    private int GetAnchorTile(string enumName)
+    public Vector3 GetAnchorTile(string enumName)
     {
         // Select the correct anchor Tile depending on Sprite
         int anchorID = 0;
@@ -111,9 +111,28 @@ public class SpriteManager
                 anchorID = 241;
                 break;
             default:
-                break;
+                return new Vector3(-1,-1,-1);
         }
-        return anchorID;
+        // Check if the tile group contains this sprite type
+        if (tileGroups.TryGetValue(enumName, out Dictionary<int, Vector2> tiles))
+        {
+            // Find the tile with the matching anchor ID
+            if (tiles.TryGetValue(anchorID, out Vector2 position))
+            {
+                return new Vector3(position.X, position.Y, anchorID);
+            }
+        }
+        return new Vector3(-1,-1,-1);
+    }
+
+    public Dictionary<string, Dictionary<int, Vector2>> GetTileGroups()
+    {
+        return tileGroups;
+    }
+
+    public Dictionary<string, List<int>> GetTileMappings()
+    {
+        return tileMappings;
     }
 
     // TODO:

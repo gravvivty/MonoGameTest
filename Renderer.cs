@@ -248,17 +248,78 @@ namespace SWEN_Game
         // TODO: Adjust rendering logic 
         public void RenderPrerenderedLevel(LDtkLevel level)
         {
+            Dictionary<string, Dictionary<int, Vector2>> tileGroups = _spriteManager.GetTileGroups();
+            Dictionary<string, List<int>> tileMappings = _spriteManager.GetTileMappings();
+
             if (PrerenderedLevels.TryGetValue(level.Identifier, out RenderedLevel prerenderedLevel))
             {
+                // Draw the while world as is
                 for (int i = 0; i < prerenderedLevel.Layers.Length; i++)
                 {
                     Globals.SpriteBatch.Draw(prerenderedLevel.Layers[i], level.Position.ToVector2(), Color.White);
+                }
+                // Now check for all EnumTags
+                foreach (var (enumTag, tileGroup) in tileGroups)
+                {
+                    // All tiles within the EnumTag
+                    foreach (var (tileID, tilePos) in tileGroup)
+                    {
+                        // Check Position from player to that tile with EnumTag (e.g. House during first iteration)
+                        if (Vector2.Distance(tilePos, _player.position) < 64)
+                        {
+                            float depth = 0;
+                            // Player Y will compare to this Y
+                            // X,Y,anchorTileID
+                            Vector3 anchor = _spriteManager.GetAnchorTile(enumTag);
+
+                            var (tileTexture, sourceRect)  = GetTextureForTile((int)anchor.Z, level);
+                            if (_player.position.Y > anchor.Y)
+                            {
+                                depth = 0.3f;
+                                //--> define player depth somewhere, shouldnt be here probably
+                                //float player_depth = 0.5f;
+                                //render tile in background
+                            }
+                            else
+                            {
+                                depth = 0.8f;
+                                // render tile in foreground
+                            }
+                            Globals.SpriteBatch.Draw(tileTexture, tilePos, null, Color.White, 0f,
+                                   Vector2.Zero, 1f, SpriteEffects.None, depth);
+                        }
+                    }
                 }
             }
             else
             {
                 throw new LDtkException($"No prerendered level with Identifier {level.Identifier} found.");
             }
+        }
+
+        // TODO: there is a problem with this GetTexture setup - no idea why - need to fix
+        public (Texture2D, Rectangle) GetTextureForTile(int tileID, LDtkLevel level)
+        {
+            Dictionary<string, List<int>> tileMappings = _spriteManager.GetTileMappings();
+            Dictionary<string, Dictionary<int, Vector2>> tileGroups = _spriteManager.GetTileGroups();
+
+            foreach (var (tilesetPath, tileList) in tileMappings)
+            {
+                if (tileList.Contains(tileID))
+                {
+                    Texture2D tilesetTexture = GetTexture(level, tilesetPath);
+
+                    // Get the tile position within the tileset
+                    if (tileGroups.TryGetValue(tilesetPath, out var tilePositions) && tilePositions.TryGetValue(tileID, out Vector2 tilePos))
+                    {
+                        int tileSize = 16; // Adjust based grid size
+                        Rectangle sourceRect = new Rectangle((int)tilePos.X * tileSize, (int)tilePos.Y * tileSize, tileSize, tileSize);
+                        return (tilesetTexture, sourceRect);
+                    }
+                }
+            }
+
+            throw new Exception($"TileID {tileID} not found in any tileset.");
         }
     }
 }
