@@ -31,33 +31,45 @@ public class SpriteManager
 
     private void mapTileToTexture()
     {
+        Vector2 invalid = new Vector2(-1,-1);    
+        // Go through all Enum Values
         foreach (var item in Globals.File.Defs.Enums[0].Values)
         {
             string enumID = item.Id; // e.g. House, Tree_Big, etc.
+            // Go through all tilesets
             foreach (var tileset in Globals.File.Defs.Tilesets)
             {
                 if (tileset.EnumTags != null)
                 {
+                    // Every EnumTag
                     foreach (var enumTag in tileset.EnumTags)
                     {
+                        // if Tileset contains Enum that exists
                         if (enumTag.EnumValueId == enumID)
                         {
+                            // New Key if it doesnt exist yet (e.g. "House")
                             if (!tileMappings.ContainsKey(enumTag.EnumValueId))
                             {
                                 tileMappings[enumTag.EnumValueId] = new List<int>();
                                 tileGroups[enumTag.EnumValueId] = new Dictionary<int, List<Vector2>>();
                             }
-
+                            // Add all tileIDs to the correct enum
                             tileMappings[enumTag.EnumValueId].AddRange(enumTag.TileIds);
 
+                            // Get correct WorldPos
                             foreach (var tileID in enumTag.TileIds)
                             {
-                                Vector2 tilePosition = GetTileWorldPosition(tileID);
+                                Vector2 tilePosition = GetTileWorldPosition(tileID, enumTag.EnumValueId);
+                                // New Key if (e.g. "House", 130 doesnt exist)
                                 if (!tileGroups[enumTag.EnumValueId].ContainsKey(tileID))
                                 {
                                     tileGroups[enumTag.EnumValueId][tileID] = new List<Vector2>();
                                 }
-                                tileGroups[enumTag.EnumValueId][tileID].Add(tilePosition);
+                                // Check if Vector is invalid
+                                if (tilePosition != invalid)
+                                {
+                                    tileGroups[enumTag.EnumValueId][tileID].Add(tilePosition);
+                                }
                             }
                         }
                     }
@@ -66,7 +78,7 @@ public class SpriteManager
         }
     }
 
-    private Vector2 GetTileWorldPosition(int tileID)
+    private Vector2 GetTileWorldPosition(int tileID, string enumTag)
     {
         // Go through all levels
         foreach (var level in Globals.World.Levels)
@@ -83,8 +95,17 @@ public class SpriteManager
                         // Check if tileIDs match
                         if (gridTile.T == tileID)
                         {
-                            // there is a matching Tile with ID at X,Y
-                            return new Vector2(gridTile.Px.X, gridTile.Px.Y);
+                            // If Tile with EnumTag, ID and same coords exists --> dont return - iterate again
+                            Vector2 tilePos = new Vector2(gridTile.Px.X, gridTile.Px.Y);
+                            if (tileGroups.ContainsKey(enumTag) && tileGroups[enumTag].ContainsKey(tileID) 
+                                && tileGroups[enumTag][tileID].Contains(tilePos)) 
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                return tilePos;
+                            }
                         }
                     }
                 }

@@ -61,15 +61,15 @@ namespace SWEN_Game
                         _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, layer);
                     }
 
-                    // Check within 64px around Player
-                    // if there is a tile with an ID that occurs in tileMappings (means it is part of a bigger Sprite)
-                    // get that tile that just entered your radius - look for that EnumTag - figure out the anchortileID 
-                    // which anchortile do we use? cuz there will be multiple
-                    // use anchortile closest to the tile that entered radius WITHIN THE SAME LAYER!!
-                    // now we can use this anchortiles Y for the whole EnumTags that are within radius
-                    // this way we can dynamically draw based on entity proximity
-                    //
-                    // As of now each tile's Y gets treated seperately
+                    /* TODO:
+                     * Check within 64px around Player
+                     * Check if there is a Tile with ID that occurs in tileMappings
+                     * Check EnumTag for that Tile - get anchorTileID
+                     * Use anchorTile closest to Tile (same Layer)
+                     * Use anchorTile's Y for whole EnumTag Group within radius 
+                     * 
+                     * As of now each tile's Y gets treated seperately
+                     */
                 }
             }
 
