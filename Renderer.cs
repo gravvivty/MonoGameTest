@@ -62,13 +62,12 @@ namespace SWEN_Game
                     }
 
                     /* TODO:
-                     * Check within 64px around Player
-                     * Check if there is a Tile with ID that occurs in tileMappings
-                     * Check EnumTag for that Tile - get anchorTileID
-                     * Use anchorTile closest to Tile (same Layer)
-                     * Use anchorTile's Y for whole EnumTag Group within radius 
-                     * 
-                     * As of now each tile's Y gets treated seperately
+                     *  Check within 64px around Player
+                     *  Check if there is a Tile with ID that occurs in tileMappings
+                     *  Check EnumTag for that Tile - get anchorTileID
+                     *  Use anchorTile closest to Tile (same Layer)
+                     *  Use anchorTile's Y for whole EnumTag Group within radius
+                     *  As of now each tile's Y gets treated seperately
                      */
                 }
             }
