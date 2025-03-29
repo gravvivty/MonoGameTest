@@ -1,21 +1,18 @@
 ﻿using SWEN_Game;
-using System;
 using System.Collections.Generic;
 using LDtk;
-using LDtkTypes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Enum = LDtkTypes.Enum;
 
 public class SpriteManager
 {
     private Dictionary<string, List<int>> tileMappings = new Dictionary<string, List<int>>();
 
     private Dictionary<string, Dictionary<int, List<Vector2>>> tileGroups = new();
+
     /*
     "House": {
-       231: [ (100, 200), (150, 250) ], 
+       231: [ (100, 200), (150, 250) ],
        432: [ (300, 400) ] }
     ,
     "Tree": {
@@ -31,7 +28,7 @@ public class SpriteManager
 
     private void mapTileToTexture()
     {
-        Vector2 invalid = new Vector2(-1,-1);    
+        Vector2 invalid = new Vector2(-1, -1);
         // Go through all Enum Values
         foreach (var item in Globals.File.Defs.Enums[0].Values)
         {
@@ -47,12 +44,13 @@ public class SpriteManager
                         // if Tileset contains Enum that exists
                         if (enumTag.EnumValueId == enumID)
                         {
-                            // New Key if it doesnt exist yet (e.g. "House")
+                            // New Key if it doesn't exist yet (e.g. "House")
                             if (!tileMappings.ContainsKey(enumTag.EnumValueId))
                             {
                                 tileMappings[enumTag.EnumValueId] = new List<int>();
                                 tileGroups[enumTag.EnumValueId] = new Dictionary<int, List<Vector2>>();
                             }
+
                             // Add all tileIDs to the correct enum
                             tileMappings[enumTag.EnumValueId].AddRange(enumTag.TileIds);
 
@@ -65,6 +63,7 @@ public class SpriteManager
                                 {
                                     tileGroups[enumTag.EnumValueId][tileID] = new List<Vector2>();
                                 }
+
                                 // Check if Vector is invalid
                                 if (tilePosition != invalid)
                                 {
@@ -97,8 +96,8 @@ public class SpriteManager
                         {
                             // If Tile with EnumTag, ID and same coords exists --> dont return - iterate again
                             Vector2 tilePos = new Vector2(gridTile.Px.X, gridTile.Px.Y);
-                            if (tileGroups.ContainsKey(enumTag) && tileGroups[enumTag].ContainsKey(tileID) 
-                                && tileGroups[enumTag][tileID].Contains(tilePos)) 
+                            if (tileGroups.ContainsKey(enumTag) && tileGroups[enumTag].ContainsKey(tileID)
+                                                                && tileGroups[enumTag][tileID].Contains(tilePos))
                             {
                                 continue;
                             }
@@ -111,6 +110,7 @@ public class SpriteManager
                 }
             }
         }
+
         // No matching tile with ID
         return new Vector2(-1, -1);
     }
@@ -144,8 +144,9 @@ public class SpriteManager
                 break;
             default:
                 break;
-                // Sprites that are one singular tile like most Small_Deco tiles - wont need an anchor
+            // Sprites that are one singular tile like most Small_Deco tiles - wont need an anchor
         }
+
         return anchorID;
     }
 
@@ -180,9 +181,11 @@ public class SpriteManager
                 depth -= 0.001f;
                 break;
         }
+
         // Using the bottom of the sprite as the reference
         return depth;
     }
+
     public float GetDepth(Vector2 position, float spriteHeight)
     {
         float depth = (position.Y + spriteHeight) / 1000f;
@@ -192,7 +195,8 @@ public class SpriteManager
 
 
     // Draw a tile with its depth computed from its world position
-    public void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position, LayerInstance layer)
+    public void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position,
+        LayerInstance layer)
     {
         float depth = GetDepth(position, sourceRect.Height, layer);
         spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None,
@@ -207,7 +211,7 @@ public class SpriteManager
             forcedDepth);
     }
 
-    // Old method - deprecated :) (or u can make it un-depreacted by moving stuff from renderer to here)
+    // Old method - deprecated
     public void DrawTiles(SpriteBatch spriteBatch, Texture2D tileset, int tileSize, int tilesetColumns, LDtkLevel level)
     {
         foreach (var layer in level.LayerInstances)
@@ -231,5 +235,4 @@ public class SpriteManager
         float depth = GetDepth(new Vector2(position.X, position.Y + texture.Height), 0);
         spriteBatch.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, depth);
     }
-
 }

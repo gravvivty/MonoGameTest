@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LDtk;
 using LDtk.Renderer;
-using LDtkTypes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Enum = LDtkTypes.Enum;
+
 
 namespace SWEN_Game
 {
     public class Renderer
     {
+        private static float CHECK_DEPTH_RADIUS = 100f;
+
         private ExampleRenderer _renderer;
         private Player _player;
         private SpriteManager _spriteManager;
@@ -24,91 +23,151 @@ namespace SWEN_Game
             RenderInit();
         }
 
+        /// <summary>
+        /// Draws the entire game world including background tiles, sprite groups, the player, and collision boxes.
+        /// </summary>
+        /// <remarks>
+        /// This method precomputes anchor depths for sprite groups near the player, applies the camera transformation,
+        /// and renders background layers, grouped tiles with shared depth based on their anchor tile, as well as other game entities.
+        /// </remarks>
         public void drawWorld()
         {
-            Dictionary<string, Dictionary<int, List<Vector2>>> tileGroups = _spriteManager.GetTileGroups();
-            Dictionary<string, List<int>> tileMappings = _spriteManager.GetTileMappings();
+            // Precompute anchor depths for sprite groups within a specific radius around the player.
+            // This groups tiles by their EnumTag and uses the nearest anchor tile's Y value for consistent depth.
+            var anchorDepths = SpriteGroupAnchorCalculation(CHECK_DEPTH_RADIUS);
 
+            // Begin the sprite batch with depth sorting (FrontToBack) and apply the camera transformation.
             Globals.SpriteBatch.Begin(
-                sortMode: SpriteSortMode.FrontToBack,
+                SpriteSortMode.FrontToBack,
                 transformMatrix: calcTranslation(),
                 samplerState: SamplerState.PointClamp);
 
+            // Get the current level and mapping between EnumTags and tile IDs.
             var level = Globals.World.Levels[0];
+            var tileMappings = _spriteManager.GetTileMappings();
 
+            // Process each layer in the level.
             foreach (var layer in level.LayerInstances)
             {
-                // If this layer is specifically the "Background" layer, we’ll force it behind everything
                 bool isBackground = layer._Identifier == "Background";
+                // Skip layers without an associated tileset texture.
                 if (layer._TilesetRelPath == null) continue;
 
+                // Retrieve the texture for this tileset.
                 Texture2D tilesetTexture = GetTilesetTextureFromRenderer(level, layer._TilesetRelPath);
 
+                // Process each tile in the current layer.
                 foreach (var tile in layer.GridTiles)
                 {
-                    Vector2 position = new Vector2(tile.Px.X + layer._PxTotalOffsetX,
-                        tile.Px.Y + layer._PxTotalOffsetY);
-                    Rectangle srcRect = new Rectangle(tile.Src.X, tile.Src.Y, layer._GridSize, layer._GridSize);
+                    // Calculate the world position of the tile by applying layer offsets.
+                    Vector2 position = new(tile.Px.X + layer._PxTotalOffsetX, tile.Px.Y + layer._PxTotalOffsetY);
+                    Rectangle srcRect = new(tile.Src.X, tile.Src.Y, layer._GridSize, layer._GridSize);
 
+                    // For background layers, draw with a forced depth of 0 (ensuring they render behind all other tiles).
                     if (isBackground)
                     {
-                        // Draw the background tiles with a forced depth of 0 (which is behind anything > 0).
                         _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, 0f);
+                        continue;
+                    }
+
+                    // Determine if the tile belongs to a sprite group by checking its tile ID in the mappings.
+                    string foundEnumTag = null;
+                    foreach (var (enumTag, ids) in tileMappings)
+                    {
+                        if (ids.Contains(tile.T))
+                        {
+                            foundEnumTag = enumTag;
+                            break;
+                        }
+                    }
+
+                    // If the tile is part of a sprite group and an anchor depth has been computed for that group,
+                    // use the group's anchor depth for all its tiles. Otherwise, calculate depth per tile normally.
+                    if (!string.IsNullOrEmpty(foundEnumTag) &&
+                        anchorDepths.TryGetValue(foundEnumTag, out float anchorDepth))
+                    {
+                        _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, anchorDepth);
                     }
                     else
                     {
-                        // Normal tile depth calculation
                         _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, layer);
                     }
-
-                    /* TODO:
-                     *  Check within 64px around Player
-                     *  Check if there is a Tile with ID that occurs in tileMappings
-                     *  Check EnumTag for that Tile - get anchorTileID
-                     *  Use anchorTile closest to Tile (same Layer)
-                     *  Use anchorTile's Y for whole EnumTag Group within radius
-                     *  As of now each tile's Y gets treated seperately
-                     */
                 }
             }
 
-            // Draw the player
+            // Draw the player sprite using its calculated depth.
             _spriteManager.DrawPlayer(Globals.SpriteBatch, _player.texture, _player.position);
 
-            // Player Collision Box
+            // Draw the player's collision box for debugging, using a pink overlay.
             Rectangle entityRect = new Rectangle(
                 (int)_player.position.X + _player.texture.Width / 2 - 2,
                 (int)_player.position.Y + _player.texture.Height - 3,
                 _player.texture.Width / 4,
                 _player.texture.Height / 15);
-
-            //float collisionDepth = _spriteManager.GetDepth(new Vector2(entityRect.X, entityRect.Y), entityRect.Height);
             Globals.SpriteBatch.Draw(_player.texture, entityRect, null, Color.Pink, 0f, Vector2.Zero,
                 SpriteEffects.None, 1f);
 
+            // Draw any collision areas in red.
             foreach (var collision in Globals.Collisions)
             {
-                Globals.SpriteBatch.Draw(_player.texture, collision, null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
+                Globals.SpriteBatch.Draw(_player.texture, collision, null, Color.Red, 0f, new Vector2(0, 0),
+                    SpriteEffects.None, 1f);
             }
 
+            // End the sprite batch.
             Globals.SpriteBatch.End();
         }
 
-        // Not complete but wanted to use this to calculate which AnchorTile to use from the tileGroups Map
-        private float SpriteGroupAnchorCalculation(Dictionary<string, Dictionary<int, List<Vector2>>> tileGroups,
-            Dictionary<string, List<int>> tileMappings)
+        /// <summary>
+        /// Calculates the rendering depth for sprite groups based on the position of their anchor tiles.
+        /// </summary>
+        /// <param name="radius">The radius within which to consider anchor tiles for depth calculation.</param>
+        /// <returns>
+        /// A dictionary mapping each sprite group identifier (EnumTag) to its computed depth value.
+        /// </returns>
+        /// <remarks>
+        /// For each sprite group, this function identifies the designated anchor tile (using GetAnchorTileID) and selects the instance
+        /// closest to the player's position. If this instance is within the specified radius, its depth (based on its Y coordinate) is used
+        /// for the entire group, ensuring consistent layer ordering.
+        /// </remarks>
+        private Dictionary<string, float> SpriteGroupAnchorCalculation(float radius)
         {
-            float spriteGroupDepth = 0f;
-            foreach (var (enumTag, tileGroup) in tileGroups)
-            {
-                // All tiles within the EnumTag
-                foreach (var (tileID, tileList) in tileGroup)
-                {
-                    int anchorID = _spriteManager.GetAnchorTileID(enumTag);
+            // Dictionary to store computed depth for each sprite group (keyed by EnumTag).
+            var result = new Dictionary<string, float>();
+            // Retrieve all tile groups categorized by their EnumTag.
+            var tileGroups = _spriteManager.GetTileGroups();
 
+            // Iterate over each sprite group.
+            foreach (var (enumTag, group) in tileGroups)
+            {
+                // Get the designated anchor tile ID for this group.
+                int anchorID = _spriteManager.GetAnchorTileID(enumTag);
+                // If there is no valid anchor or the group doesn't contain the anchor tile, skip this group.
+                if (anchorID == 0 || !group.ContainsKey(anchorID)) continue;
+
+                float minDist = float.MaxValue;
+                Vector2 bestAnchorPos = Vector2.Zero;
+
+                // Find the anchor tile occurrence that is closest to the player.
+                foreach (var anchorPos in group[anchorID])
+                {
+                    float dist = Vector2.Distance(anchorPos, _player.position);
+                    if (dist < minDist)
+                    {
+                        minDist = dist;
+                        bestAnchorPos = anchorPos;
+                    }
+                }
+
+                // If the closest anchor is within the specified radius, compute its depth and assign it to the sprite group.
+                if (minDist <= radius)
+                {
+                    float anchorDepth = _spriteManager.GetDepth(bestAnchorPos, 16f);
+                    result[enumTag] = anchorDepth;
                 }
             }
-            return spriteGroupDepth;
+
+            return result;
         }
 
 
