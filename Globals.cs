@@ -44,8 +44,8 @@ namespace SWEN_Game
                         // e.g. x = 52 % 75 -> 52 * 16
                         // e.g. y = 6 / 75 -> 6 * 16 
                         // --> loops around cuz math
-                        int x = (cells % gridCellWidth) * gridSize + level0.WorldX; //<-- WorldX/Y needed for offset
-                        int y = (cells / gridCellWidth) * gridSize + level0.WorldY;
+                        int x = (cells % gridCellWidth) * gridSize; //<-- WorldX/Y needed for offset
+                        int y = (cells / gridCellWidth) * gridSize;
                         // Add to Global Collisions List
                         Collisions.Add(new Rectangle(x, y, gridSize, gridSize));
                     }

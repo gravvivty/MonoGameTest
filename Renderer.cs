@@ -21,7 +21,6 @@ namespace SWEN_Game
         {
             _player = player;
             _spriteManager = spriteManager;
-            _renderer = new ExampleRenderer(Globals.SpriteBatch, Globals.Content);
             RenderInit();
         }
 
@@ -61,6 +60,16 @@ namespace SWEN_Game
                         // Normal tile depth calculation
                         _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, layer);
                     }
+
+                    // Check within 64px around Player
+                    // if there is a tile with an ID that occurs in tileMappings (means it is part of a bigger Sprite)
+                    // get that tile that just entered your radius - look for that EnumTag - figure out the anchortileID 
+                    // which anchortile do we use? cuz there will be multiple
+                    // use anchortile closest to the tile that entered radius WITHIN THE SAME LAYER!!
+                    // now we can use this anchortiles Y for the whole EnumTags that are within radius
+                    // this way we can dynamically draw based on entity proximity
+                    //
+                    // As of now each tile's Y gets treated seperately
                 }
             }
 
@@ -86,6 +95,7 @@ namespace SWEN_Game
             Globals.SpriteBatch.End();
         }
 
+        // Not complete but wanted to use this to calculate which AnchorTile to use from the tileGroups Map
         private float SpriteGroupAnchorCalculation(Dictionary<string, Dictionary<int, List<Vector2>>> tileGroups,
             Dictionary<string, List<int>> tileMappings)
         {
@@ -97,23 +107,6 @@ namespace SWEN_Game
                 {
                     int anchorID = _spriteManager.GetAnchorTileID(enumTag);
 
-                    float depth = 0;
-                    // Check Position from player to that tile with EnumTag (e.g. House during first iteration)
-                    if (Vector2.Distance(tilePos, _player.position) < 20)
-                    {
-                        if (_player.position.Y > anchor.Y)
-                        {
-                            depth = 0.3f;
-                            //--> define player depth somewhere, shouldnt be here probably
-                            // float player_depth = 0.5f;
-                            // Tilegroup of anchor in background
-                        }
-                        else
-                        {
-                            depth = 0.8f;
-                            // Tilegroup of anchor in foreground
-                        }
-                    }
                 }
             }
             return spriteGroupDepth;
@@ -155,10 +148,6 @@ namespace SWEN_Game
 
         private void RenderInit()
         {
-            foreach (LDtkLevel level in Globals.World.Levels)
-            {
-                _renderer.PrerenderLevel(level);
-            }
         }
     }
 }

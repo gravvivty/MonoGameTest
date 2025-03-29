@@ -53,6 +53,10 @@ public class SpriteManager
                             foreach (var tileID in enumTag.TileIds)
                             {
                                 Vector2 tilePosition = GetTileWorldPosition(tileID);
+                                if (!tileGroups[enumTag.EnumValueId].ContainsKey(tileID))
+                                {
+                                    tileGroups[enumTag.EnumValueId][tileID] = new List<Vector2>();
+                                }
                                 tileGroups[enumTag.EnumValueId][tileID].Add(tilePosition);
                             }
                         }
@@ -142,17 +146,14 @@ public class SpriteManager
         float depth = (position.Y + spriteHeight) / 1000f;
         switch (layer._Identifier)
         {
-            case "Deco_Focuslayer1":
-                depth += 0.001f;
+            case "Deco_Big3":
+                //depth -= 0.001f;
                 break;
-            case "Deco_Focuslayer2":
-                depth += 0.001f;
+            case "Deco_Big2":
+                //depth -= 0.001f;
                 break;
-            case "Deco_Backdrop_1":
-                depth -= 0.001f;
-                break;
-            case "Deco_Backdrop_2":
-                depth -= 0.001f;
+            case "Deco_Big1":
+                //depth -= 0.001f;
                 break;
             case "Deco_Small":
                 depth -= 0.001f;
