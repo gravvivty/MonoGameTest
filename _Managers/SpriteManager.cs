@@ -10,24 +10,30 @@ using Enum = LDtkTypes.Enum;
 
 public class SpriteManager
 {
-    // Maps a TileIDs to the EnumTag - what TileID belongs to which Sprite
     private Dictionary<string, List<int>> tileMappings = new Dictionary<string, List<int>>();
-    // Maps all the tiles with matching Enum - also saves the Position and ID of those tiles
-    private Dictionary<string, Dictionary<int, Vector2>> tileGroups = new Dictionary<string, Dictionary<int, Vector2>>();
 
+    private Dictionary<string, Dictionary<int, List<Vector2>>> tileGroups = new();
+    /*
+    "House": {
+       231: [ (100, 200), (150, 250) ], 
+       432: [ (300, 400) ] }
+    ,
+    "Tree": {
+        512: [ (50, 50), (75, 125) ]
+    }*/
+    // How TileGroups looks like --> so now we can go through this --> 
+    // since we have a radius around the player we should check idk 64px 
+    // so now we can go through this collection and see which anchorTileID is closest to the tile that just came into our radius
     public SpriteManager()
-	{
+    {
         mapTileToTexture();
-	}
+    }
 
     private void mapTileToTexture()
     {
-        // Iterates through all EnumTags and creates a Map with Key e.g. "House" and List<int> as Values
-        // Basically the TileIDs under "House" all belong to a bigger Sprite - in this case some house
-        // Useful since we now have a way to make tiles with THAT matching ID to render in the Back-/Foreground
         foreach (var item in Globals.File.Defs.Enums[0].Values)
         {
-            string enumID = item.Id; // ID House, Tree_Big, etc.
+            string enumID = item.Id; // e.g. House, Tree_Big, etc.
             foreach (var tileset in Globals.File.Defs.Tilesets)
             {
                 if (tileset.EnumTags != null)
@@ -39,14 +45,15 @@ public class SpriteManager
                             if (!tileMappings.ContainsKey(enumTag.EnumValueId))
                             {
                                 tileMappings[enumTag.EnumValueId] = new List<int>();
-                                tileGroups[enumTag.EnumValueId] = new Dictionary<int, Vector2>();
+                                tileGroups[enumTag.EnumValueId] = new Dictionary<int, List<Vector2>>();
                             }
+
                             tileMappings[enumTag.EnumValueId].AddRange(enumTag.TileIds);
 
                             foreach (var tileID in enumTag.TileIds)
                             {
                                 Vector2 tilePosition = GetTileWorldPosition(tileID);
-                                tileGroups[enumTag.EnumValueId][tileID] = tilePosition;
+                                tileGroups[enumTag.EnumValueId][tileID].Add(tilePosition);
                             }
                         }
                     }
@@ -80,10 +87,10 @@ public class SpriteManager
             }
         }
         // No matching tile with ID
-        return new Vector2(0, 0);
+        return new Vector2(-1, -1);
     }
 
-    public Vector3 GetAnchorTile(string enumName)
+    public int GetAnchorTileID(string enumName)
     {
         // Select the correct anchor Tile depending on Sprite
         int anchorID = 0;
@@ -111,21 +118,13 @@ public class SpriteManager
                 anchorID = 241;
                 break;
             default:
-                return new Vector3(-1,-1,-1);
+                break;
+                // Sprites that are one singular tile like most Small_Deco tiles - wont need an anchor
         }
-        // Check if the tile group contains this sprite type
-        if (tileGroups.TryGetValue(enumName, out Dictionary<int, Vector2> tiles))
-        {
-            // Find the tile with the matching anchor ID
-            if (tiles.TryGetValue(anchorID, out Vector2 position))
-            {
-                return new Vector3(position.X, position.Y, anchorID);
-            }
-        }
-        return new Vector3(-1,-1,-1);
+        return anchorID;
     }
 
-    public Dictionary<string, Dictionary<int, Vector2>> GetTileGroups()
+    public Dictionary<string, Dictionary<int, List<Vector2>>> GetTileGroups()
     {
         return tileGroups;
     }
@@ -135,16 +134,80 @@ public class SpriteManager
         return tileMappings;
     }
 
-    // TODO:
-    // We now know which TileIDs belong to what Sprite 
-    // set an anchor tile for each Sprite (enumTags) in tileMappings - (a Sprite is just the Key in tileMappings)
-    // when that anchor's Y-Value (e.g. Tree - 264 Tile in LDTK - bottom right as the Y-Value) gets crossed
-    // then render all of these tiles within that enumTag group correctly and only look
-    // if they have to be rendered - in a 64px Radius around the player - that's where we apply Y-Sorting
-    // Depth Values can be from 0f - 1.0f
-    // --> probably will need a new Map where the actual on map coordinates of the Tiles are stored with EnumTag
-    // private Dictionary<string, Dictionary<int, Vector2>> tileGroups = new Dictionary<string, Dictionary<int, Vector2>>();
-    // TileIDs with pos are stored in Globals.World.Levels[0].GridTiles
-    // I imported ExampleRender Class into Renderer
-    // Change RenderPrerenderedLevel at the bottom of Renderer to adjust Depth and rendering changes
+    // Computes a layer depth value based on the object's Y position.
+    // Lower Y (closer to the top) yields a lower depth value.
+    public float GetDepth(Vector2 position, float spriteHeight, LayerInstance layer)
+    {
+        // Adjusted depth based on layer - there were cases where a flower was above lantern cuz it was closer to top
+        float depth = (position.Y + spriteHeight) / 1000f;
+        switch (layer._Identifier)
+        {
+            case "Deco_Focuslayer1":
+                depth += 0.001f;
+                break;
+            case "Deco_Focuslayer2":
+                depth += 0.001f;
+                break;
+            case "Deco_Backdrop_1":
+                depth -= 0.001f;
+                break;
+            case "Deco_Backdrop_2":
+                depth -= 0.001f;
+                break;
+            case "Deco_Small":
+                depth -= 0.001f;
+                break;
+        }
+        // Using the bottom of the sprite as the reference
+        return depth;
+    }
+    public float GetDepth(Vector2 position, float spriteHeight)
+    {
+        float depth = (position.Y + spriteHeight) / 1000f;
+        // Using the bottom of the sprite as the reference
+        return depth;
+    }
+
+
+    // Draw a tile with its depth computed from its world position
+    public void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position, LayerInstance layer)
+    {
+        float depth = GetDepth(position, sourceRect.Height, layer);
+        spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None,
+            depth);
+    }
+
+    // Forced depth (with overload)
+    public void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position,
+        float forcedDepth)
+    {
+        spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None,
+            forcedDepth);
+    }
+
+    // Old method - deprecated :) (or u can make it un-depreacted by moving stuff from renderer to here)
+    public void DrawTiles(SpriteBatch spriteBatch, Texture2D tileset, int tileSize, int tilesetColumns, LDtkLevel level)
+    {
+        foreach (var layer in level.LayerInstances)
+        {
+            foreach (var tile in layer.GridTiles)
+            {
+                Rectangle srcRect = new Rectangle(
+                    (tile.T % tilesetColumns) * tileSize,
+                    (tile.T / tilesetColumns) * tileSize,
+                    tileSize,
+                    tileSize);
+            }
+        }
+    }
+
+
+    // Draw the player sprite with a depth so it can be interleaved with tiles.
+    public void DrawPlayer(SpriteBatch spriteBatch, Texture2D texture, Vector2 position)
+    {
+        // Use the bottom of the player sprite to compute depth.
+        float depth = GetDepth(new Vector2(position.X, position.Y + texture.Height), 0);
+        spriteBatch.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, depth);
+    }
+
 }
