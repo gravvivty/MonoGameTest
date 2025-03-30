@@ -9,12 +9,10 @@ namespace SWEN_Game
 {
     public class Renderer
     {
-        private static float CHECK_DEPTH_RADIUS = 150f;
+        private static float CHECK_DEPTH_RADIUS = 100f;
 
-        private ExampleRenderer _renderer;
         private Player _player;
         private SpriteManager _spriteManager;
-        public float zoom { get; private set; } = 4f;
 
         public Renderer(Player player, SpriteManager spriteManager)
         {
@@ -29,7 +27,7 @@ namespace SWEN_Game
         /// This method precomputes anchor depths for sprite groups near the player, applies the camera transformation,
         /// and renders background layers, grouped tiles with shared depth based on their anchor tile, as well as other game entities.
         /// </remarks>
-        public void drawWorld()
+        public void DrawWorld()
         {
             // Begin the sprite batch with depth sorting (FrontToBack) and apply the camera transformation.
             Globals.SpriteBatch.Begin(
@@ -93,35 +91,8 @@ namespace SWEN_Game
                     }
                 }
             }
-
-            // Draw the player sprite using its calculated depth.
-            _spriteManager.DrawPlayer(Globals.SpriteBatch, _player.texture, _player.position);
-
-            // Draw the player's collision box for debugging, using a pink overlay.
-            Rectangle entityRect = new Rectangle(
-                (int)_player.position.X + _player.texture.Width/2-2,
-                (int)_player.position.Y + _player.texture.Height-3,
-                _player.texture.Width / 4,
-                _player.texture.Height / 15);
-            Globals.SpriteBatch.Draw(_player.texture, entityRect, null, Color.Pink, 0f, Vector2.Zero,
-                SpriteEffects.None, 1f);
-
-            // Draw any collision areas in red.
-            /*foreach (var collision in Globals.Collisions)
-            {
-                Globals.SpriteBatch.Draw(_player.texture, collision, null, Color.Red, 0f, new Vector2(0, 0),
-                    SpriteEffects.None, 1f);
-            }*/
-
-            // Draw Player Position/Rectangle
-            Rectangle posRect = new Rectangle(
-                (int)_player.realPos.X,
-                (int)_player.realPos.Y,
-                _player.texture.Width / 4,
-                _player.texture.Height / 15);
-            Globals.SpriteBatch.Draw(_player.texture, posRect, null, Color.Blue, 0f, Vector2.Zero,
-                SpriteEffects.None, 1f);
-
+            _player.Draw();
+            drawPlayerDebug();
             // End the sprite batch.
             Globals.SpriteBatch.End();
         }
@@ -149,7 +120,7 @@ namespace SWEN_Game
             foreach (var (enumTag, group) in tileGroups)
             {
                 // Get the designated anchor tile ID for this group.
-                int anchorID = _spriteManager.GetAnchorTileID(enumTag);
+                int anchorID = GetAnchorTileID(enumTag);
                 // If there is no valid anchor or the group doesn't contain the anchor tile, skip this group.
                 if (anchorID == 0 || !group.ContainsKey(anchorID)) continue;
 
@@ -167,8 +138,8 @@ namespace SWEN_Game
 
                     }
                     // Draw Anchor Tiles
-                    /*Globals.SpriteBatch.Draw(_player.texture, new Rectangle((int)anchorPos.X, (int)anchorPos.Y, 16, 16), null, Color.Red, 0f, new Vector2(0, 0),
-                SpriteEffects.None, 1f);*/
+                    Globals.SpriteBatch.Draw(_player.texture, new Rectangle((int)anchorPos.X, (int)anchorPos.Y, 16, 16), null, Color.Blue, 0f, new Vector2(0, 0),
+                SpriteEffects.None, 1f);
                 }
 
                 // If the closest anchor is within the specified radius, compute its depth and assign it to the sprite group.
@@ -201,19 +172,86 @@ namespace SWEN_Game
             }
         }
 
-        public void SetZoom(float newZoom)
-        {
-            zoom = newZoom;
-        }
-
         private Matrix calcTranslation()
         {
             return Matrix.CreateTranslation(-_player.position.X, -_player.position.Y, 0) *
-                   Matrix.CreateScale(zoom, zoom, 1f) *
+                   Matrix.CreateScale(Globals.Zoom, Globals.Zoom, 1f) *
                    Matrix.CreateTranslation(
-                       Globals.Graphics.PreferredBackBufferWidth / 2f - _player.texture.Width * 3,
-                       Globals.Graphics.PreferredBackBufferHeight / 2f - _player.texture.Height,
+                       Globals.Graphics.PreferredBackBufferWidth / 2f,
+                       Globals.Graphics.PreferredBackBufferHeight / 2f,
                        0);
+        }
+
+        public void drawPlayerDebug()
+        {
+
+            // Draw the player sprite using its calculated depth.
+            //_spriteManager.DrawPlayer(Globals.SpriteBatch, _player.texture, _player.position);
+
+            // Draw the player's collision box for debugging, using a pink overlay.
+            Rectangle entityRect = new Rectangle(
+                (int)_player.position.X + 5,
+                (int)_player.position.Y + 10,
+                _player.texture.Width / 16,
+                _player.texture.Height / 36);
+            Globals.SpriteBatch.Draw(Globals.Content.Load<Texture2D>("hm_1"), entityRect, null, Color.Pink, 0f, Vector2.Zero,
+                SpriteEffects.None, 1f);
+            
+
+            // Draw any collision areas in red.
+            foreach (var collision in Globals.Collisions)
+            {
+                Globals.SpriteBatch.Draw(Globals.Content.Load<Texture2D>("hm_1"), collision, null, Color.Red, 0f, new Vector2(0, 0),
+                    SpriteEffects.None, 1f);
+            }
+
+            // Draw Player Position/Rectangle
+            Rectangle posRect = new Rectangle(
+                (int)_player.realPos.X,
+                (int)_player.realPos.Y,
+                _player.texture.Width / 64,
+                _player.texture.Height / 144);
+            Globals.SpriteBatch.Draw(Globals.Content.Load<Texture2D>("hm_1"), posRect, null, Color.Blue, 0f, Vector2.Zero,
+                SpriteEffects.None, 1f);
+
+        }
+
+        public int GetAnchorTileID(string enumName)
+        {
+            // Select the correct anchor Tile depending on Sprite
+            int anchorID = 0;
+            switch (enumName)
+            {
+                case "House":
+                    anchorID = 324;
+                    break;
+                case "Tree_Big":
+                    anchorID = 264;
+                    break;
+                case "Tree_Small":
+                    anchorID = 237;
+                    break;
+                case "Lantern":
+                    anchorID = 213;
+                    break;
+                case "Stump":
+                    anchorID = 81;
+                    break;
+                case "Fence_Big":
+                    anchorID = 10;
+                    break;
+                case "Log":
+                    anchorID = 241;
+                    break;
+                case "Bridge":
+                    anchorID = 32;
+                    break;
+                default:
+                    break;
+                    // Sprites that are one singular tile like most Small_Deco tiles - wont need an anchor
+            }
+
+            return anchorID;
         }
     }
 }

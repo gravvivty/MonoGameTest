@@ -9,9 +9,11 @@ namespace SWEN_Game
 {
     public static class InputManager
     {
-        public static void manageInput(Player player)
+        public static Vector2 moveDirection;
+        public static bool isMoving;
+        public static void Update(Player player)
         {
-            Vector2 moveDirection = Vector2.Zero;
+            moveDirection = Vector2.Zero;
             // How long was the button held
             float delta = Globals.Time;
             KeyboardState keyboardState;
@@ -41,6 +43,23 @@ namespace SWEN_Game
             if (!Globals.isColliding(tentativePosition, player.texture))
             {
                 player.SetPosition(tentativePosition, tentativePositionReal);
+            }
+        }
+
+        public static Vector2 GetDirection()
+        {
+            return moveDirection;
+        }
+
+        public static bool IsMoving()
+        {
+            if (moveDirection != Vector2.Zero)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

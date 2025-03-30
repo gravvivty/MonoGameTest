@@ -107,43 +107,7 @@ public class SpriteManager
         return positions;
     }
 
-    public int GetAnchorTileID(string enumName)
-    {
-        // Select the correct anchor Tile depending on Sprite
-        int anchorID = 0;
-        switch (enumName)
-        {
-            case "House":
-                anchorID = 324;
-                break;
-            case "Tree_Big":
-                anchorID = 264;
-                break;
-            case "Tree_Small":
-                anchorID = 237;
-                break;
-            case "Lantern":
-                anchorID = 213;
-                break;
-            case "Stump":
-                anchorID = 81;
-                break;
-            case "Fence_Big":
-                anchorID = 10;
-                break;
-            case "Log":
-                anchorID = 241;
-                break;
-            case "Bridge":
-                anchorID = 32;
-                break;
-            default:
-                break;
-            // Sprites that are one singular tile like most Small_Deco tiles - wont need an anchor
-        }
-
-        return anchorID;
-    }
+    
 
     public Dictionary<string, Dictionary<int, List<Vector2>>> GetTileGroups()
     {

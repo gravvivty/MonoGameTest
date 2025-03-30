@@ -16,22 +16,46 @@ namespace SWEN_Game
         // Used to check if something is near the player
         public Vector2 realPos { get; private set; }
         public float speed { get; private set; }
-        public Rectangle playerRect { get; private set; }
 
-        public Player()
+        private readonly SpriteManager _spriteManager;
+
+        private readonly AnimationManager _anims = new();
+
+        public Player(SpriteManager spriteManager)
         {
-            texture = Globals.Content.Load<Texture2D>("hm_1");
+            texture = Globals.Content.Load<Texture2D>("player");
+            _spriteManager = spriteManager;
             speed = 150f;
             // Spawn Pos
             position = new Vector2(50, 50);
             // Offset Pos - used for actually comparing positions
-            realPos = new Vector2(50 + texture.Width/2-5, 50+texture.Height-10);
+            realPos = new Vector2(58, 62);
+
+            _anims.AddAnimation(new Vector2(0, -1), new(texture, 1, 3, 0.1f, _spriteManager,1));
+            _anims.AddAnimation(new Vector2(1, -1), new(texture, 1, 3, 0.1f, _spriteManager, 2));
+            _anims.AddAnimation(new Vector2(1, 0), new(texture, 1, 3, 0.1f, _spriteManager, 3));
+            _anims.AddAnimation(new Vector2(1, 1), new(texture, 1, 3, 0.1f, _spriteManager, 4));
+            _anims.AddAnimation(new Vector2(0, 1), new(texture, 1, 3, 0.1f, _spriteManager, 5));
+            _anims.AddAnimation(new Vector2(-1, 1), new(texture, 1, 3, 0.1f, _spriteManager, 6));
+            _anims.AddAnimation(new Vector2(-1, 0), new(texture, 1, 3, 0.1f, _spriteManager, 7));
+            _anims.AddAnimation(new Vector2(-1, -1), new(texture, 1, 3, 0.1f, _spriteManager, 8));
+
         }
 
         public void SetPosition(Vector2 newPos, Vector2 newRealPos)
         {
             position = newPos;
             realPos = newRealPos;
+        }
+
+        public void Update()
+        {
+            _anims.Update(InputManager.moveDirection);
+        }
+
+        public void Draw()
+        {
+            _anims.Draw(position);
         }
     }
 }

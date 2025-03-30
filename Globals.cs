@@ -20,6 +20,7 @@ namespace SWEN_Game
         public static LDtkFile File { get; set; }
         public static LDtkWorld World { get; set; }
         public static List<Rectangle> Collisions { get; set; }
+        public static float Zoom { get; private set; } = 4f;
 
         public static void UpdateTime(GameTime gameTime)
         {
@@ -56,8 +57,8 @@ namespace SWEN_Game
         public static bool isColliding(Vector2 pos, Texture2D texture)
         {
             // Assumes entity collision as small rectangle at the very bottom of the Sprite
-            Rectangle entityRect = new Rectangle((int)pos.X + texture.Width / 2 - 2,
-                (int)pos.Y + texture.Height - 3, texture.Width / 4, texture.Height / 15);
+            Rectangle entityRect = new Rectangle((int)pos.X + 5,
+                (int)pos.Y + 10, texture.Width / 16, texture.Height / 36);
             foreach (var rect in Collisions)
             {
                 if (entityRect.Intersects(rect))
@@ -67,6 +68,13 @@ namespace SWEN_Game
             }
             return false;
         }
+
+        public static void SetZoom(float newZoom)
+        {
+            Zoom = newZoom;
+        }
+
+
     }
 }
 
