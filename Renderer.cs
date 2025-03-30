@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LDtk;
 using LDtk.Renderer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace SWEN_Game
 {
@@ -12,11 +14,13 @@ namespace SWEN_Game
 
         private Player _player;
         private SpriteManager _spriteManager;
+        private SpriteCalculator _spriteCalculator;
 
-        public Renderer(Player player, SpriteManager spriteManager)
+        public Renderer(Player player, SpriteManager spriteManager, SpriteCalculator spriteCalculator)
         {
             _player = player;
             _spriteManager = spriteManager;
+            _spriteCalculator = spriteCalculator;
         }
 
         /// <summary>
@@ -28,15 +32,9 @@ namespace SWEN_Game
         /// </remarks>
         public void DrawWorld()
         {
-            // Begin the sprite batch with depth sorting (FrontToBack) and apply the camera transformation.
-            Globals.SpriteBatch.Begin(
-                SpriteSortMode.FrontToBack,
-                transformMatrix: CalcTranslation(),
-                samplerState: SamplerState.PointClamp);
-
             // Precompute anchor depths for sprite groups within a specific radius around the player.
             // This groups tiles by their EnumTag and uses the nearest anchor tile's Y value for consistent depth.
-            var anchorDepths = SpriteGroupAnchorCalculation(DepthRadius);
+            var anchorDepths = _spriteCalculator.SpriteGroupAnchorCalculation(DepthRadius);
 
             // Get the current level and mapping between EnumTags and tile IDs.
             var level = Globals.World.Levels[0];
@@ -54,7 +52,7 @@ namespace SWEN_Game
                 }
 
                 // Retrieve the texture for this tileset.
-                Texture2D tilesetTexture = GetTilesetTextureFromRenderer(level, layer._TilesetRelPath);
+                Texture2D tilesetTexture = _spriteManager.GetTilesetTextureFromRenderer(level, layer._TilesetRelPath);
 
                 // Process each tile in the current layer.
                 foreach (var tile in layer.GridTiles)
@@ -66,7 +64,7 @@ namespace SWEN_Game
                     // For background layers, draw with a forced depth of 0 (ensuring they render behind all other tiles).
                     if (isBackground)
                     {
-                        _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, 0f);
+                        DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, 0f);
                         continue;
                     }
 
@@ -86,206 +84,61 @@ namespace SWEN_Game
                     if (!string.IsNullOrEmpty(foundEnumTag) &&
                         anchorDepths.TryGetValue(foundEnumTag, out float anchorDepth))
                     {
-                        _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, anchorDepth);
+                        DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, anchorDepth);
                     }
                     else
                     {
-                        _spriteManager.DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, layer);
+                        DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, layer);
                     }
                 }
             }
 
             _player.Draw();
-
-            // DrawPlayerDebug();
-
-            // End the sprite batch.
-            Globals.SpriteBatch.End();
         }
 
-        public void DrawPlayerDebug()
+        public Matrix CalcTranslation()
         {
-            // Draw the player sprite using its calculated depth.
-            // _spriteManager.DrawPlayer(Globals.SpriteBatch, _player.texture, _player.position);
+            MouseState mouseState = Mouse.GetState();
+            Vector2 screenCenter = new Vector2(
+                Globals.Graphics.PreferredBackBufferWidth / 2f,
+                Globals.Graphics.PreferredBackBufferHeight / 2f);
 
-            // Draw the player's collision box for debugging, using a pink overlay.
-            Rectangle entityRect = new Rectangle(
-              (int)_player.Position.X + 5,
-              (int)_player.Position.Y + 10,
-              _player.Texture.Width / 16,
-              _player.Texture.Height / 36);
-            Globals.SpriteBatch.Draw(
-                Globals.Content.Load<Texture2D>("hm_1"),
-                entityRect,
-                null,
-                Color.Pink,
-                0f,
-                Vector2.Zero,
-                SpriteEffects.None,
-                1f);
+            // Raw mouse offset from the screen center -> cuz character is center of screen
+            Vector2 rawMouseOffset = new Vector2(mouseState.X, mouseState.Y) - screenCenter;
 
-            // Draw any collision areas in red.
-            foreach (var collision in Globals.Collisions)
+            float maxMouseRange = 1000f; // Mouse can affect camera within this range
+            float maxCameraOffset = 30f; // Camera shifts within this range
+
+            // Scales the Offset down - 0->maxMouseRange gets scaled to 0->maxCameraOffset
+            // Ensures Camera smoothness
+            Vector2 mouseOffset = rawMouseOffset * (maxCameraOffset / maxMouseRange);
+
+            // Ensure the final offset never exceeds maxCameraOffset
+            if (mouseOffset.Length() > maxCameraOffset)
             {
-                Globals.SpriteBatch.Draw(
-                    Globals.Content.Load<Texture2D>("hm_1"),
-                    collision,
-                    null,
-                    Color.Red,
-                    0f,
-                    new Vector2(0, 0),
-                    SpriteEffects.None,
-                    1f);
+                mouseOffset.Normalize(); // Keep direction
+                mouseOffset = mouseOffset * maxCameraOffset; // Clamp to maxCameraOffset
             }
 
-            // Draw Player Position/Rectangle
-            Rectangle posRect = new Rectangle(
-                (int)_player.RealPos.X,
-                (int)_player.RealPos.Y,
-                _player.Texture.Width / 32,
-                _player.Texture.Height / 72);
-            Globals.SpriteBatch.Draw(
-                Globals.Content.Load<Texture2D>("hm_1"),
-                posRect,
-                null,
-                Color.Blue,
-                0f,
-                Vector2.Zero,
-                SpriteEffects.None,
-                1f);
+            return Matrix.CreateTranslation(
+                -_player.RealPos.X - mouseOffset.X,
+                -_player.RealPos.Y - mouseOffset.Y,
+                0) *
+                Matrix.CreateScale(Globals.Zoom, Globals.Zoom, 1f) *
+                Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
         }
 
-        public int GetAnchorTileID(string enumName)
+        // Draw a tile with its depth computed from its world position
+        private void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position, LayerInstance layer)
         {
-            // Select the correct anchor Tile depending on Sprite
-            int anchorID = 0;
-            switch (enumName)
-            {
-                case "House":
-                    anchorID = 324;
-                    break;
-                case "Tree_Big":
-                    anchorID = 264;
-                    break;
-                case "Tree_Small":
-                    anchorID = 237;
-                    break;
-                case "Lantern":
-                    anchorID = 213;
-                    break;
-                case "Stump":
-                    anchorID = 81;
-                    break;
-                case "Fence_Big":
-                    anchorID = 10;
-                    break;
-                case "Log":
-                    anchorID = 241;
-                    break;
-                case "Bridge":
-                    anchorID = 3;
-                    break;
-                default:
-                    break;
-
-                    // Sprites that are one singular tile like most Small_Deco tiles - wont need an anchor
-            }
-
-            return anchorID;
+            float depth = _spriteManager.GetDepth(position, sourceRect.Height, layer);
+            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, depth);
         }
 
-        /// <summary>
-        /// Calculates the rendering depth for sprite groups based on the position of their anchor tiles.
-        /// </summary>
-        /// <param name="radius">The radius within which to consider anchor tiles for depth calculation.</param>
-        /// <returns>
-        /// A dictionary mapping each sprite group identifier (EnumTag) to its computed depth value.
-        /// </returns>
-        /// <remarks>
-        /// For each sprite group, this function identifies the designated anchor tile (using GetAnchorTileID) and selects the instance
-        /// closest to the player's position. If this instance is within the specified radius, its depth (based on its Y coordinate) is used
-        /// for the entire group, ensuring consistent layer ordering.
-        /// </remarks>
-        private Dictionary<string, float> SpriteGroupAnchorCalculation(float radius)
+        // Forced depth (with overload)
+        private void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position, float forcedDepth)
         {
-            // Dictionary to store computed depth for each sprite group (keyed by EnumTag).
-            var result = new Dictionary<string, float>();
-
-            // Retrieve all tile groups categorized by their EnumTag.
-            var tileGroups = _spriteManager.GetTileGroups();
-
-            // Iterate over each sprite group.
-            foreach (var (enumTag, group) in tileGroups)
-            {
-                // Get the designated anchor tile ID for this group.
-                int anchorID = GetAnchorTileID(enumTag);
-
-                // If there is no valid anchor or the group doesn't contain the anchor tile, skip this group.
-                if (anchorID == 0 || !group.ContainsKey(anchorID))
-                {
-                    continue;
-                }
-
-                float minDist = float.MaxValue;
-                Vector2 bestAnchorPos = Vector2.Zero;
-
-                // Find the anchor tile occurrence that is closest to the player.
-                foreach (var anchorPos in group[anchorID])
-                {
-                    float dist = Vector2.Distance(anchorPos, _player.RealPos);
-                    if (dist < minDist)
-                    {
-                        minDist = dist;
-                        bestAnchorPos = anchorPos;
-                    }
-
-                    // Draw Anchor Tiles
-                    /*Globals.SpriteBatch.Draw(_player.Texture, new Rectangle((int)anchorPos.X, (int)anchorPos.Y, 16, 16), null, Color.Blue, 0f, new Vector2(0, 0),
-                SpriteEffects.None, 1f);*/
-                }
-
-                // If the closest anchor is within the specified radius, compute its depth and assign it to the sprite group.
-                if (minDist <= radius)
-                {
-                    float anchorDepth = _spriteManager.GetDepth(bestAnchorPos, 16f);
-                    result[enumTag] = anchorDepth;
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Helper method to retrieve the tileset texture using ExampleRenderer logic.
-        /// </summary>
-        /// <param name="level">Level to load Textures from.</param>
-        /// <param name="tilesetPath">Path of desired texture (Usually a layer).</param>
-        /// <returns>Texture Sheet.</returns>
-        private Texture2D GetTilesetTextureFromRenderer(LDtkLevel level, string tilesetPath)
-        {
-            if (Globals.Content == null)
-            {
-                string directory = System.IO.Path.GetDirectoryName(level.WorldFilePath) !;
-                string assetName = System.IO.Path.Join(directory, tilesetPath);
-                return Texture2D.FromFile(Globals.Graphics.GraphicsDevice, assetName);
-            }
-            else
-            {
-                string file = System.IO.Path.ChangeExtension(tilesetPath, null);
-                string directory = System.IO.Path.GetDirectoryName(level.WorldFilePath) !;
-                string assetName = System.IO.Path.Join(directory, file);
-                return Globals.Content.Load<Texture2D>(assetName);
-            }
-        }
-
-        private Matrix CalcTranslation()
-        {
-            return Matrix.CreateTranslation(-_player.Position.X, -_player.Position.Y, 0) *
-                   Matrix.CreateScale(Globals.Zoom, Globals.Zoom, 1f) *
-                   Matrix.CreateTranslation(
-                       Globals.Graphics.PreferredBackBufferWidth / 2f,
-                       Globals.Graphics.PreferredBackBufferHeight / 2f,
-                       0);
+            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, forcedDepth);
         }
     }
 }

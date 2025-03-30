@@ -1,36 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|e:\\game_dev\\monogame\\uni\\maingame\\swen_game\\swen_game\\renderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:renderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|e:\\game_dev\\monogame\\uni\\maingame\\swen_game\\swen_game\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|e:\\game_dev\\monogame\\uni\\maingame\\swen_game\\swen_game\\_managers\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:_managers\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|e:\\game_dev\\monogame\\uni\\maingame\\swen_game\\swen_game\\globals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:globals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|e:\\game_dev\\monogame\\uni\\maingame\\swen_game\\swen_game\\_managers\\inputmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:_managers\\inputmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|e:\\game_dev\\monogame\\uni\\maingame\\swen_game\\swen_game\\maingame.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:maingame.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|e:\\game_dev\\monogame\\uni\\maingame\\swen_game\\swen_game\\_managers\\spritemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:_managers\\spritemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -38,102 +9,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "InputManager.cs",
-              "DocumentMoniker": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\_Managers\\InputManager.cs",
-              "RelativeDocumentMoniker": "_Managers\\InputManager.cs",
-              "ToolTip": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\_Managers\\InputManager.cs",
-              "RelativeToolTip": "_Managers\\InputManager.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAgwC4AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T21:57:17.417Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Player.cs",
-              "DocumentMoniker": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\Player.cs",
-              "RelativeDocumentMoniker": "Player.cs",
-              "ToolTip": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\Player.cs",
-              "RelativeToolTip": "Player.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAywBkAAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T21:37:58.986Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "GameManager.cs",
-              "DocumentMoniker": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\_Managers\\GameManager.cs",
-              "RelativeDocumentMoniker": "_Managers\\GameManager.cs",
-              "ToolTip": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\_Managers\\GameManager.cs",
-              "RelativeToolTip": "_Managers\\GameManager.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABwAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T19:24:43.128Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Renderer.cs",
-              "DocumentMoniker": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\Renderer.cs",
-              "RelativeDocumentMoniker": "Renderer.cs",
-              "ToolTip": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\Renderer.cs",
-              "RelativeToolTip": "Renderer.cs",
-              "ViewState": "AgIAAH8AAAAAAAAAAADwv1oAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T18:26:38.481Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "SpriteManager.cs",
-              "DocumentMoniker": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\_Managers\\SpriteManager.cs",
-              "RelativeDocumentMoniker": "_Managers\\SpriteManager.cs",
-              "ToolTip": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\_Managers\\SpriteManager.cs",
-              "RelativeToolTip": "_Managers\\SpriteManager.cs",
-              "ViewState": "AgIAAIYAAAAAAAAAAAAswJgAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T18:26:36.803Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "MainGame.cs",
-              "DocumentMoniker": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\MainGame.cs",
-              "RelativeDocumentMoniker": "MainGame.cs",
-              "ToolTip": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\MainGame.cs",
-              "RelativeToolTip": "MainGame.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAgwDcAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T18:20:12.63Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Globals.cs",
-              "DocumentMoniker": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\Globals.cs",
-              "RelativeDocumentMoniker": "Globals.cs",
-              "ToolTip": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\Globals.cs",
-              "RelativeToolTip": "Globals.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAADwAAABIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T18:20:10.721Z",
-              "EditorCaption": ""
             }
           ]
         }
