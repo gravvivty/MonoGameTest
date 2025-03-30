@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Assimp.Configs;
+﻿using System.Collections.Generic;
 using LDtk;
 using LDtkTypes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using static LDtkTypes.Worlds;
 
 namespace SWEN_Game
 {
@@ -22,10 +17,11 @@ namespace SWEN_Game
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
 
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.HardwareModeSwitch = false;
             _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
         }
@@ -69,7 +65,7 @@ namespace SWEN_Game
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             _gameManager.Draw();

@@ -38,6 +38,29 @@ namespace SWEN_Game
 			return tileMappings;
 		}
 
+        /// <summary>
+        /// Helper method to retrieve the tileset texture using ExampleRenderer logic.
+        /// </summary>
+        /// <param name="level">Level to load Textures from.</param>
+        /// <param name="tilesetPath">Path of desired texture (Usually a layer).</param>
+        /// <returns>Texture Sheet.</returns>
+        public Texture2D GetTilesetTextureFromRenderer(LDtkLevel level, string tilesetPath)
+        {
+            if (Globals.Content == null)
+            {
+                string directory = System.IO.Path.GetDirectoryName(level.WorldFilePath) !;
+                string assetName = System.IO.Path.Join(directory, tilesetPath);
+                return Texture2D.FromFile(Globals.Graphics.GraphicsDevice, assetName);
+            }
+            else
+            {
+                string file = System.IO.Path.ChangeExtension(tilesetPath, null);
+                string directory = System.IO.Path.GetDirectoryName(level.WorldFilePath) !;
+                string assetName = System.IO.Path.Join(directory, file);
+                return Globals.Content.Load<Texture2D>(assetName);
+            }
+        }
+
         // Computes a layer depth value based on the object's Y position.
         // Lower Y (closer to the top) yields a lower depth value.
         public float GetDepth(Vector2 position, float spriteHeight, LayerInstance layer)
@@ -73,27 +96,6 @@ namespace SWEN_Game
 
 			// Using the bottom of the sprite as the reference
 			return depth;
-		}
-
-        // Draw a tile with its depth computed from its world position
-        public void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position, LayerInstance layer)
-		{
-			float depth = GetDepth(position, sourceRect.Height, layer);
-			spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, depth);
-		}
-
-        // Forced depth (with overload)
-        public void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position, float forcedDepth)
-		{
-			spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, forcedDepth);
-		}
-
-        // Draw the player sprite with a depth so it can be interleaved with tiles.
-        public void DrawPlayer(SpriteBatch spriteBatch, Texture2D texture, Vector2 position)
-		{
-			// Use the bottom of the player sprite to compute depth.
-			float depth = GetDepth(new Vector2(position.X, position.Y + texture.Height), 0);
-			spriteBatch.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, depth);
 		}
 
         private void MapTileToTexture()
