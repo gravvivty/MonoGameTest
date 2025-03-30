@@ -22,7 +22,7 @@ namespace SWEN_Game
             _texture = texture;
             _frameTime = frameTime;
             _frameTimeLeft = _frameTime;
-            _totalFrames = framesX;
+            _totalFrames = framesY;
             int frameWidth = 16;
             int frameHeight = 16;
 
@@ -66,7 +66,7 @@ namespace SWEN_Game
 
         public void Draw(Vector2 position)
         {
-            float depth = _spriteManager.GetDepth(position, 50);
+            float depth = _spriteManager.GetDepth(position, 16);
             Globals.SpriteBatch.Draw(_texture, position, _srcRect[_currentFrame], Color.White, 0, Vector2.Zero, Vector2.One
                 , SpriteEffects.None, depth);
         }

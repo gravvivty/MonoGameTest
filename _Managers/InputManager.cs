@@ -9,8 +9,8 @@ namespace SWEN_Game
 {
     public static class InputManager
     {
-        public static Vector2 moveDirection;
-        public static bool isMoving;
+        private static Vector2 moveDirection;
+        private static bool isMoving => moveDirection != Vector2.Zero;
         public static void Update(Player player)
         {
             moveDirection = Vector2.Zero;
@@ -44,6 +44,10 @@ namespace SWEN_Game
             {
                 player.SetPosition(tentativePosition, tentativePositionReal);
             }
+
+            // Normalize for Animation Use
+            moveDirection = new Vector2(Math.Sign(moveDirection.X), Math.Sign(moveDirection.Y));
+
         }
 
         public static Vector2 GetDirection()

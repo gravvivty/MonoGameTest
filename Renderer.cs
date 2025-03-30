@@ -138,8 +138,8 @@ namespace SWEN_Game
 
                     }
                     // Draw Anchor Tiles
-                    Globals.SpriteBatch.Draw(_player.texture, new Rectangle((int)anchorPos.X, (int)anchorPos.Y, 16, 16), null, Color.Blue, 0f, new Vector2(0, 0),
-                SpriteEffects.None, 1f);
+                    /*Globals.SpriteBatch.Draw(_player.texture, new Rectangle((int)anchorPos.X, (int)anchorPos.Y, 16, 16), null, Color.Blue, 0f, new Vector2(0, 0),
+                SpriteEffects.None, 1f);*/
                 }
 
                 // If the closest anchor is within the specified radius, compute its depth and assign it to the sprite group.
@@ -184,12 +184,13 @@ namespace SWEN_Game
 
         public void drawPlayerDebug()
         {
-
+            /*
             // Draw the player sprite using its calculated depth.
             //_spriteManager.DrawPlayer(Globals.SpriteBatch, _player.texture, _player.position);
 
             // Draw the player's collision box for debugging, using a pink overlay.
-            Rectangle entityRect = new Rectangle(
+            
+              Rectangle entityRect = new Rectangle(
                 (int)_player.position.X + 5,
                 (int)_player.position.Y + 10,
                 _player.texture.Width / 16,
@@ -204,16 +205,16 @@ namespace SWEN_Game
                 Globals.SpriteBatch.Draw(Globals.Content.Load<Texture2D>("hm_1"), collision, null, Color.Red, 0f, new Vector2(0, 0),
                     SpriteEffects.None, 1f);
             }
-
+            
             // Draw Player Position/Rectangle
-            Rectangle posRect = new Rectangle(
+            /*Rectangle posRect = new Rectangle(
                 (int)_player.realPos.X,
                 (int)_player.realPos.Y,
-                _player.texture.Width / 64,
-                _player.texture.Height / 144);
+                _player.texture.Width / 32,
+                _player.texture.Height / 72);
             Globals.SpriteBatch.Draw(Globals.Content.Load<Texture2D>("hm_1"), posRect, null, Color.Blue, 0f, Vector2.Zero,
                 SpriteEffects.None, 1f);
-
+            */
         }
 
         public int GetAnchorTileID(string enumName)
@@ -244,7 +245,7 @@ namespace SWEN_Game
                     anchorID = 241;
                     break;
                 case "Bridge":
-                    anchorID = 32;
+                    anchorID = 3;
                     break;
                 default:
                     break;

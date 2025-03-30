@@ -25,11 +25,11 @@ namespace SWEN_Game
         {
             texture = Globals.Content.Load<Texture2D>("player");
             _spriteManager = spriteManager;
-            speed = 150f;
+            speed = 120f;
             // Spawn Pos
-            position = new Vector2(50, 50);
+            position = new Vector2(100, 100);
             // Offset Pos - used for actually comparing positions
-            realPos = new Vector2(58, 62);
+            realPos = new Vector2(108, 116);
 
             _anims.AddAnimation(new Vector2(0, -1), new(texture, 1, 3, 0.1f, _spriteManager,1));
             _anims.AddAnimation(new Vector2(1, -1), new(texture, 1, 3, 0.1f, _spriteManager, 2));
@@ -50,7 +50,7 @@ namespace SWEN_Game
 
         public void Update()
         {
-            _anims.Update(InputManager.moveDirection);
+            _anims.Update(InputManager.GetDirection());
         }
 
         public void Draw()

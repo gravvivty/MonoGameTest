@@ -124,7 +124,7 @@ public class SpriteManager
     public float GetDepth(Vector2 position, float spriteHeight, LayerInstance layer)
     {
         // Adjusted depth based on layer - there were cases where a flower was above lantern cuz it was closer to top
-        float depth = (position.Y + spriteHeight) / 1000f;
+        float depth = (position.Y + spriteHeight/2) / 1000f;
         switch (layer._Identifier)
         {
             case "Deco_Big3":
@@ -134,12 +134,16 @@ public class SpriteManager
                 //depth -= 0.001f;
                 break;
             case "Deco_Big1":
-                //depth -= 0.001f;
+                //depth -= 0.0015f;
                 break;
             case "Deco_Small":
                 depth -= 0.001f;
                 break;
+            case "Deco_Background":
+                depth = 0.0001f;
+                break;
         }
+
 
         // Using the bottom of the sprite as the reference
         return depth;
@@ -147,7 +151,7 @@ public class SpriteManager
 
     public float GetDepth(Vector2 position, float spriteHeight)
     {
-        float depth = (position.Y + spriteHeight) / 1000f;
+        float depth = (position.Y + spriteHeight/2) / 1000f;
         // Using the bottom of the sprite as the reference
         return depth;
     }
