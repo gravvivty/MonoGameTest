@@ -8,11 +8,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SWEN_Game
 {
-    // Globals because this HAS to be accessible for ALL the classes
+    /// <summary>
+    /// Global Variables like Content,Spritebatch,Time,etc.
+    /// </summary>
     public static class Globals
     {
         public static float Time { get; set; }
-        // Access everything you want e.g. 
+
+        // Access everything you want e.g.
         public static ContentManager Content { get; set; }
         public static GraphicsDeviceManager Graphics { get; set; }
         public static SpriteBatch SpriteBatch { get; set; }
@@ -24,10 +27,10 @@ namespace SWEN_Game
 
         public static void UpdateTime(GameTime gameTime)
         {
-            Time = (float)gameTime.ElapsedGameTime.TotalSeconds;        
+            Time = (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public static void calculateAllCollisions()
+        public static void CalculateAllCollisions()
         {
             var level0 = World.Levels[0];
             var collisionLayer = level0.LayerInstances[0];
@@ -35,6 +38,7 @@ namespace SWEN_Game
             if (collisionLayer != null)
             {
                 int gridSize = collisionLayer._GridSize;
+
                 // Number of Cells in a row
                 int gridCellWidth = collisionLayer._CWid;
                 int cells = 0;
@@ -43,22 +47,28 @@ namespace SWEN_Game
                     if (collisionLayer.IntGridCsv[cells] == 1)
                     {
                         // e.g. x = 52 % 75 -> 52 * 16
-                        // e.g. y = 6 / 75 -> 6 * 16 
+                        // e.g. y = 6 / 75 -> 6 * 16
                         // --> loops around cuz math
-                        int x = (cells % gridCellWidth) * gridSize; //<-- WorldX/Y needed for offset
+                        int x = (cells % gridCellWidth) * gridSize; // <-- WorldX/Y needed for offset
                         int y = (cells / gridCellWidth) * gridSize;
+
                         // Add to Global Collisions List
                         Collisions.Add(new Rectangle(x, y, gridSize, gridSize));
                     }
+
                     cells++;
                 }
             }
         }
-        public static bool isColliding(Vector2 pos, Texture2D texture)
+
+        public static bool IsColliding(Vector2 pos, Texture2D texture)
         {
             // Assumes entity collision as small rectangle at the very bottom of the Sprite
-            Rectangle entityRect = new Rectangle((int)pos.X + 5,
-                (int)pos.Y + 10, texture.Width / 16, texture.Height / 36);
+            Rectangle entityRect = new Rectangle(
+                (int)pos.X + 5,
+                (int)pos.Y + 10,
+                texture.Width / 16,
+                texture.Height / 36);
             foreach (var rect in Collisions)
             {
                 if (entityRect.Intersects(rect))
@@ -66,6 +76,7 @@ namespace SWEN_Game
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -73,9 +84,5 @@ namespace SWEN_Game
         {
             Zoom = newZoom;
         }
-
-
     }
 }
-
-

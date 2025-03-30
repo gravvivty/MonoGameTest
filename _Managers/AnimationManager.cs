@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace SWEN_Game
 {
@@ -12,7 +12,7 @@ namespace SWEN_Game
         private object _currentKey;
         public AnimationManager()
         {
-
+            // dummy
         }
 
         public void AddAnimation(object key, Animation animation)
@@ -33,6 +33,7 @@ namespace SWEN_Game
                 _animations[key].Update();
                 _currentKey = key;
             }
+
             /*
             else if (_lastKey != null && _animations.ContainsKey(_lastKey))
             {
@@ -48,4 +49,3 @@ namespace SWEN_Game
         }
     }
 }
-
