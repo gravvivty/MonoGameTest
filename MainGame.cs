@@ -24,8 +24,8 @@ namespace SWEN_Game
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            _graphics.PreferredBackBufferWidth = 1000;
-            _graphics.PreferredBackBufferHeight = 500;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
             _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
         }
@@ -55,10 +55,12 @@ namespace SWEN_Game
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
+            }
 
             // TODO: Add your update logic here
-            // Update 
+            // Update
             _gameManager.Update();
             Globals.UpdateTime(gameTime);
 

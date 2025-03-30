@@ -9,39 +9,50 @@ namespace SWEN_Game
 {
     public static class InputManager
     {
-        public static void manageInput(Player player)
+        private static Vector2 moveDirection;
+        public static void Update(Player player)
         {
-            Vector2 moveDirection = Vector2.Zero;
+            moveDirection = Vector2.Zero;
+
             // How long was the button held
             float delta = Globals.Time;
             KeyboardState keyboardState;
             keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.W)) moveDirection.Y = -1;
-            if (keyboardState.IsKeyDown(Keys.S)) moveDirection.Y = 1;
-            if (keyboardState.IsKeyDown(Keys.A)) moveDirection.X = -1;
-            if (keyboardState.IsKeyDown(Keys.D)) moveDirection.X = 1;
+            if (keyboardState.IsKeyDown(Keys.W)) { moveDirection.Y = -1; }
+            if (keyboardState.IsKeyDown(Keys.S)) { moveDirection.Y = 1; }
+            if (keyboardState.IsKeyDown(Keys.A)) { moveDirection.X = -1; }
+            if (keyboardState.IsKeyDown(Keys.D)) { moveDirection.X = 1; }
 
             // Normalize Vector
-            if (moveDirection != Vector2.Zero) moveDirection.Normalize();
+            if (moveDirection != Vector2.Zero) { moveDirection.Normalize(); }
 
             // X - Move Player if not colliding otherwise do not update Pos
-            Vector2 tentativePosition = player.position;
-            Vector2 tentativePositionReal = player.realPos;
-            tentativePosition.X += moveDirection.X * player.speed * delta;
-            tentativePositionReal.X += moveDirection.X * player.speed* delta;
-            if (!Globals.isColliding(tentativePosition, player.texture))
+            Vector2 tentativePosition = player.Position;
+            Vector2 tentativePositionReal = player.RealPos;
+            tentativePosition.X += moveDirection.X * player.Speed * delta;
+            tentativePositionReal.X += moveDirection.X * player.Speed * delta;
+            if (!Globals.IsColliding(tentativePosition, player.Texture))
             {
                 player.SetPosition(tentativePosition, tentativePositionReal);
             }
+
             // Same thing but for Y
-            tentativePosition = player.position;
-            tentativePositionReal = player.realPos;
-            tentativePosition.Y += moveDirection.Y * player.speed * delta;
-            tentativePositionReal.Y += moveDirection.Y * player.speed * delta;
-            if (!Globals.isColliding(tentativePosition, player.texture))
+            tentativePosition = player.Position;
+            tentativePositionReal = player.RealPos;
+            tentativePosition.Y += moveDirection.Y * player.Speed * delta;
+            tentativePositionReal.Y += moveDirection.Y * player.Speed * delta;
+            if (!Globals.IsColliding(tentativePosition, player.Texture))
             {
                 player.SetPosition(tentativePosition, tentativePositionReal);
             }
+
+            // Normalize for Animation Use
+            moveDirection = new Vector2(Math.Sign(moveDirection.X), Math.Sign(moveDirection.Y));
+        }
+
+        public static Vector2 GetDirection()
+        {
+            return moveDirection;
         }
     }
 }

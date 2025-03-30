@@ -12,21 +12,24 @@ namespace SWEN_Game
 
         public GameManager()
         {
-            _player = new Player();
             _spriteManager = new SpriteManager();
+            _player = new Player(_spriteManager);
             _renderer = new Renderer(_player, _spriteManager);
+
             // Calculates ALL collisions in the level
-            Globals.calculateAllCollisions();
+            Globals.CalculateAllCollisions();
         }
+
         public void Update()
         {
             // Every Frame check input
-            InputManager.manageInput(_player);
+            InputManager.Update(_player);
+            _player.Update();
         }
+
         public void Draw()
         {
-            _renderer.drawWorld();
+            _renderer.DrawWorld();
         }
     }
 }
-
