@@ -8,6 +8,7 @@ namespace SWEN_Game
     public class Animation
     {
         private readonly Texture2D _texture;
+        // Used to determine WHERE in the Spritesheet to get the Frame from
         private readonly List<Rectangle> _srcRect = new();
         private readonly SpriteManager _spriteManager;
         private readonly int _totalFrames;
@@ -19,13 +20,18 @@ namespace SWEN_Game
         public Animation(Texture2D texture, int framesX, int framesY, float frameTime, SpriteManager spriteManager, int column = 1)
         {
             _spriteManager = spriteManager;
+            // Spritesheet
             _texture = texture;
+            // How long frame should last
             _frameTime = frameTime;
+            // How much time a frame has left before changing
             _frameTimeLeft = _frameTime;
+            // Total Frames for anim 
             _totalFrames = framesY;
             int frameWidth = 16;
             int frameHeight = 16;
 
+            // Add the sprite frames from the sheet
             for (int i = 0; i < _totalFrames; i++)
             {
                 _srcRect.Add(new Rectangle((column-1) * frameWidth, i * frameHeight, frameWidth, frameHeight));
@@ -55,8 +61,10 @@ namespace SWEN_Game
                 return;
             }
 
+            // Subtract time from the current frame
             _frameTimeLeft -= Globals.Time;
 
+            // If no time --> next frame + add time
             if (_frameTimeLeft <= 0)
             {
                 _frameTimeLeft += _frameTime;
