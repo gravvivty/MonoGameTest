@@ -10,8 +10,9 @@ namespace SWEN_Game
 {
     public class Renderer
     {
-        private static readonly float DepthRadius = 100f;
+        private static readonly float DepthRadius = 120f;
 
+        private ExampleRenderer renderer;
         private Player _player;
         private SpriteManager _spriteManager;
         private SpriteCalculator _spriteCalculator;
@@ -106,7 +107,7 @@ namespace SWEN_Game
             // Raw mouse offset from the screen center -> cuz character is center of screen
             Vector2 rawMouseOffset = new Vector2(mouseState.X, mouseState.Y) - screenCenter;
 
-            float maxMouseRange = 1000f; // Mouse can affect camera within this range
+            float maxMouseRange = Globals.WindowSize.X; // Mouse can affect camera within this range
             float maxCameraOffset = 30f; // Camera shifts within this range
 
             // Scales the Offset down - 0->maxMouseRange gets scaled to 0->maxCameraOffset

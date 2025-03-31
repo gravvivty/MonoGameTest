@@ -23,7 +23,7 @@ namespace SWEN_Game
         public static LDtkFile File { get; set; }
         public static LDtkWorld World { get; set; }
         public static List<Rectangle> Collisions { get; set; }
-        public static float Zoom { get; private set; } = 4f;
+        public static int Zoom { get; private set; } = 4;
 
         public static void UpdateTime(GameTime gameTime)
         {
@@ -80,7 +80,7 @@ namespace SWEN_Game
             return false;
         }
 
-        public static void SetZoom(float newZoom)
+        public static void SetZoom(int newZoom)
         {
             Zoom = newZoom;
         }
