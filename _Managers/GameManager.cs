@@ -39,8 +39,8 @@ namespace SWEN_Game
                 transformMatrix: _renderer.CalcTranslation(),
                 samplerState: SamplerState.PointClamp);
             _renderer.DrawWorld();
-            // _debug.DrawWorldDebug();
             Globals.SpriteBatch.End();
+            _debug.DrawWorldDebug();
 
             InputManager.DrawCursor();
         }

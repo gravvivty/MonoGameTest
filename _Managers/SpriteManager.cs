@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LDtk;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -76,7 +77,7 @@ namespace SWEN_Game
 					// depth -= 0.001f;
 					break;
 				case "Deco_Big1":
-					// depth -= 0.0015f;
+					// depth -= 0.005f;
 					break;
 				case "Deco_Small":
 					depth -= 0.001f;

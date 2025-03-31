@@ -33,14 +33,11 @@ namespace SWEN_Game
                 _animations[key].Update();
                 _currentKey = key;
             }
-
-            /*
-            else if (_lastKey != null && _animations.ContainsKey(_lastKey))
+            else if (_currentKey != null && _animations.ContainsKey(_currentKey))
             {
-                _animations[_lastKey].Stop();
-                _animations[_lastKey].Reset();
+                _animations[_currentKey].Stop();
+                _animations[_currentKey].Reset();
             }
-            */
         }
 
         public void Draw(Vector2 position)

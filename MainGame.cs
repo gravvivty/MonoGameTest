@@ -43,6 +43,7 @@ namespace SWEN_Game
             Globals.World = Globals.File.LoadWorld(Worlds.World.Iid);
             Globals.Collisions = new List<Rectangle>();
             Globals.Graphics = _graphics;
+            Globals.WindowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             _gameManager = new GameManager();
 
             // TODO: use this.Content to load your game content here
