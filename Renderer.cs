@@ -12,7 +12,6 @@ namespace SWEN_Game
     {
         private static readonly float DepthRadius = 120f;
 
-        private ExampleRenderer renderer;
         private Player _player;
         private SpriteManager _spriteManager;
         private SpriteCalculator _spriteCalculator;
@@ -65,7 +64,7 @@ namespace SWEN_Game
                     // For background layers, draw with a forced depth of 0 (ensuring they render behind all other tiles).
                     if (isBackground)
                     {
-                        DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, 0f);
+                        DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, layer);
                         continue;
                     }
 
@@ -85,7 +84,7 @@ namespace SWEN_Game
                     if (!string.IsNullOrEmpty(foundEnumTag) &&
                         anchorDepths.TryGetValue(foundEnumTag, out float anchorDepth))
                     {
-                        DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, anchorDepth);
+                        DrawTile(Globals.SpriteBatch, tilesetTexture, srcRect, position, anchorDepth, layer);
                     }
                     else
                     {
@@ -137,9 +136,10 @@ namespace SWEN_Game
         }
 
         // Forced depth (with overload)
-        private void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position, float forcedDepth)
+        private void DrawTile(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRect, Vector2 position, float anchorDepth, LayerInstance layer)
         {
-            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, forcedDepth);
+            float depth = _spriteManager.GetDepth(anchorDepth, layer);
+            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, depth);
         }
     }
 }

@@ -64,40 +64,66 @@ namespace SWEN_Game
 
         // Computes a layer depth value based on the object's Y position.
         // Lower Y (closer to the top) yields a lower depth value.
+        // Spritelayers without anchor or out of Player Range
         public float GetDepth(Vector2 position, float spriteHeight, LayerInstance layer)
 		{
-			// Adjusted depth based on layer - there were cases where a flower was above lantern cuz it was closer to top
-			float depth = (position.Y + spriteHeight / 2) / 1000f;
-			switch (layer._Identifier)
-			{
-				case "Deco_Big3":
-					// depth -= 0.001f;
-					break;
-				case "Deco_Big2":
-					// depth -= 0.001f;
-					break;
-				case "Deco_Big1":
-					// depth -= 0.005f;
-					break;
-				case "Deco_Small":
-					depth -= 0.001f;
-					break;
-				case "Deco_Background":
-					depth = 0.0001f;
-					break;
-			}
+			float depth = (position.Y + spriteHeight) / 1000f;
+			float layerOffset = 0;
 
-			// Using the bottom of the sprite as the reference
-			return depth;
+            // low layerOffset --> Foreground
+			switch (layer._Identifier)
+            {
+                case "Deco_Big3":
+                    layerOffset = 8;
+                    break;
+                case "Deco_Big2":
+                    layerOffset = 6;
+                    break;
+                case "Deco_Big1":
+                    layerOffset = 4;
+                    break;
+                case "Deco_Small":
+                    layerOffset = 10;
+                    break;
+                case "Deco_Background":
+                    depth = 0.0001f;
+                    break;
+                case "Background":
+                    depth = 0f;
+                    break;
+            }
+
+			return depth - (layerOffset / 1000);
 		}
 
+        // Player or Anchor Depths
         public float GetDepth(Vector2 position, float spriteHeight)
 		{
-			float depth = (position.Y + spriteHeight / 2) / 1000f;
+			float depth = (position.Y + spriteHeight) / 1000f;
 
 			// Using the bottom of the sprite as the reference
 			return depth;
 		}
+
+        // Only Spritelayers that CAN have an anchor
+        public float GetDepth(float depth, LayerInstance layer)
+        {
+            float layerOffset = 0;
+            switch (layer._Identifier)
+            {
+                case "Deco_Big3":
+                    layerOffset = 8;
+                    break;
+                case "Deco_Big2":
+                    layerOffset = 6;
+                    break;
+                case "Deco_Big1":
+                    layerOffset = 4;
+                    break;
+            }
+
+            return depth - (layerOffset / 1000);
+        }
 
         private void MapTileToTexture()
 		{
