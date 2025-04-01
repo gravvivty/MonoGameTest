@@ -83,7 +83,7 @@ namespace SWEN_Game
                     layerOffset = 4;
                     break;
                 case "Deco_Small":
-                    layerOffset = 10;
+                    layerOffset = 2;
                     break;
                 case "Deco_Background":
                     depth = 0.0001f;
