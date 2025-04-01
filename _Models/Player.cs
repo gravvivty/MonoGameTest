@@ -32,7 +32,7 @@ namespace SWEN_Game
             Position = new Vector2(100, 100);
 
             // Offset Pos - used for actually comparing positions
-            RealPos = new Vector2(108, 116);
+            RealPos = new Vector2(106, 108);
 
             _anims.AddAnimation(new Vector2(0, -1), new(Texture, 1, 3, 0.1f, _spriteManager, 1));
             _anims.AddAnimation(new Vector2(1, -1), new(Texture, 1, 3, 0.1f, _spriteManager, 2));
