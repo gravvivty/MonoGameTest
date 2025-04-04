@@ -60,8 +60,8 @@ namespace SWEN_Game
             Rectangle posRect = new Rectangle(
                 (int)_player.RealPos.X,
                 (int)_player.RealPos.Y,
-                _player.Texture.Width / 32,
-                _player.Texture.Height / 72);
+                6,
+                6);
             Globals.SpriteBatch.Draw(
                 Globals.Content.Load<Texture2D>("hm_1"),
                 posRect,
