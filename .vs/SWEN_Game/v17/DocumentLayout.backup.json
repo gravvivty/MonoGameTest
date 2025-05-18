@@ -1,7 +1,24 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\GAME_DEV\\MonoGame\\uni\\MainGame\\SWEN_Game\\SWEN_Game\\",
-  "Documents": [],
+  "WorkspaceRootPath": "G:\\Game_Dev\\MonoGame\\private\\MonoGameTest\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|g:\\game_dev\\monogame\\private\\monogametest\\_graphics\\renderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:_graphics\\renderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|g:\\game_dev\\monogame\\private\\monogametest\\_managers\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:_managers\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|g:\\game_dev\\monogame\\private\\monogametest\\_anims\\animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:_anims\\animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|g:\\game_dev\\monogame\\private\\monogametest\\_managers\\animationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B46A9B1F-AE01-2F33-B8FD-9C2E7CF098E8}|SWEN_Game.csproj|solutionrelative:_managers\\animationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +26,63 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Renderer.cs",
+              "DocumentMoniker": "G:\\Game_Dev\\MonoGame\\private\\MonoGameTest\\_Graphics\\Renderer.cs",
+              "RelativeDocumentMoniker": "_Graphics\\Renderer.cs",
+              "ToolTip": "G:\\Game_Dev\\MonoGame\\private\\MonoGameTest\\_Graphics\\Renderer.cs",
+              "RelativeToolTip": "_Graphics\\Renderer.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAAwHcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T18:21:43.616Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GameManager.cs",
+              "DocumentMoniker": "G:\\Game_Dev\\MonoGame\\private\\MonoGameTest\\_Managers\\GameManager.cs",
+              "RelativeDocumentMoniker": "_Managers\\GameManager.cs",
+              "ToolTip": "G:\\Game_Dev\\MonoGame\\private\\MonoGameTest\\_Managers\\GameManager.cs",
+              "RelativeToolTip": "_Managers\\GameManager.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAkwBUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T18:21:16.443Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Animation.cs",
+              "DocumentMoniker": "G:\\Game_Dev\\MonoGame\\private\\MonoGameTest\\_Anims\\Animation.cs",
+              "RelativeDocumentMoniker": "_Anims\\Animation.cs",
+              "ToolTip": "G:\\Game_Dev\\MonoGame\\private\\MonoGameTest\\_Anims\\Animation.cs",
+              "RelativeToolTip": "_Anims\\Animation.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T18:19:44.241Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AnimationManager.cs",
+              "DocumentMoniker": "G:\\Game_Dev\\MonoGame\\private\\MonoGameTest\\_Managers\\AnimationManager.cs",
+              "RelativeDocumentMoniker": "_Managers\\AnimationManager.cs",
+              "ToolTip": "G:\\Game_Dev\\MonoGame\\private\\MonoGameTest\\_Managers\\AnimationManager.cs",
+              "RelativeToolTip": "_Managers\\AnimationManager.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T18:19:39.635Z",
+              "EditorCaption": ""
             }
           ]
         }

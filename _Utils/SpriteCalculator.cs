@@ -79,33 +79,105 @@ namespace SWEN_Game
 
         public int GetAnchorTileID(string enumName)
         {
-            // Select the correct anchor Tile depending on Sprite
+            // Select the correct anchor Tile depending on Sprite (bottomost tile of sprite)
             int anchorID = 0;
             switch (enumName)
             {
-                case "House":
-                    anchorID = 324;
+                case "BigCleanHouse": // FOREST
+                    anchorID = 413;
                     break;
-                case "Tree_Big":
-                    anchorID = 264;
+                case "BigMossHouse":
+                    anchorID = 377;
                     break;
-                case "Tree_Small":
-                    anchorID = 237;
+                case "ShackMoss":
+                    anchorID = 92;
                     break;
-                case "Lantern":
-                    anchorID = 213;
+                case "FrogStatue":
+                    anchorID = 249;
                     break;
-                case "Stump":
+                case "MonkStatue":
+                    anchorID = 160;
+                    break;
+                case "SmallHouseOrange":
+                    anchorID = 85;
+                    break;
+                case "Cart":
+                    anchorID = 330;
+                    break;
+                case "SmallHouseCrashed":
+                    anchorID = 89;
+                    break;
+                case "GiantLog":
+                    anchorID = 447;
+                    break;
+                case "SingleTree":
+                    anchorID = 284;
+                    break;
+                case "GroupTree":
+                    anchorID = 321;
+                    break;
+                case "Ruins":
+                    anchorID = 178;
+                    break;
+                case "Pillar":
+                    anchorID = 202;
+                    break;
+                case "SmallPillar":
+                    anchorID = 163;
+                    break;
+                case "HouseRuins":
                     anchorID = 81;
                     break;
-                case "Fence_Big":
-                    anchorID = 10;
+                case "Walls":
+                    anchorID = 410;
                     break;
-                case "Log":
-                    anchorID = 241;
+                case "Bookshelf":
+                    anchorID = 458;
                     break;
-                case "Bridge":
-                    anchorID = 3;
+                case "EmptyShelf":
+                    anchorID = 459;
+                    break;
+                case "Drawer":
+                    anchorID = 457;
+                    break;
+                case "RoundShelf":
+                    anchorID = 456;
+                    break;
+                case "Pool":
+                    anchorID = 348; // DESERT
+                    break;
+                case "SmallGreenHouseDesert":
+                    anchorID = 41;
+                    break;
+                case "BigGreenHouseDesert":
+                    anchorID = 101;
+                    break;
+                case "MarketStandDesert":
+                    anchorID = 462;
+                    break;
+                case "SmallRectangleHouseDesert":
+                    anchorID = 107;
+                    break;
+                case "BigRectangleHouseDesert":
+                    anchorID = 267;
+                    break;
+                case "CastleTower":
+                    anchorID = 395;
+                    break;
+                case "SingleTreeDesert":
+                    anchorID = 472;
+                    break;
+                case "GroupTreeDesert":
+                    anchorID = 391;
+                    break;
+                case "Watchtower":
+                    anchorID = 175; // FOREST TOWER
+                    break;
+                case "BushDesert":
+                    anchorID = 468;
+                    break;
+                case "LionStatue":
+                    anchorID = 460;
                     break;
                 default:
                     break;

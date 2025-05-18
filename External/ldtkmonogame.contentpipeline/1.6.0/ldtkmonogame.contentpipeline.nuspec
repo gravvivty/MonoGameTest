@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>LDtkMonogame.ContentPipeline</id>
+    <version>1.6.0</version>
+    <authors>Ethan Conneely</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>Icon.png</icon>
+    <readme>readme.md</readme>
+    <projectUrl>https://ldtk.ethanconneely.com/</projectUrl>
+    <description>LDtk contentpipeline extension for importing .ldtk and .ldtkl files</description>
+    <releaseNotes>https://ldtk.ethanconneely.com/Changelog</releaseNotes>
+    <tags>LDtk, Monogame, Level-Editor</tags>
+    <repository type="git" url="https://github.com/IrishBruse/LDtkMonogame" commit="b91b2d9773ac08595e23db2982b502f6b2a7fc7d" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="LDtkMonogame" version="1.6.0" exclude="Build,Analyzers" />
+        <dependency id="MonoGame.Framework.Content.Pipeline" version="3.8.2.1105" exclude="Build,Analyzers" />
+        <dependency id="MonoGame.Framework.DesktopGL" version="3.8.2.1105" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
