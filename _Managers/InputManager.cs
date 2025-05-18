@@ -28,7 +28,10 @@ namespace SWEN_Game
             Vector2 tentativePositionReal = player.RealPos;
             tentativePosition.X += moveDirection.X * player.Speed * delta;
             tentativePositionReal.X += moveDirection.X * player.Speed * delta;
-            if (!Globals.IsColliding(tentativePosition, player.Texture))
+
+            Rectangle xCollision = new Rectangle((int)tentativePosition.X + 5, (int)tentativePosition.Y + 10, 8, 8); ;
+
+            if (!Globals.IsColliding(xCollision))
             {
                 player.SetPosition(tentativePosition, tentativePositionReal);
             }
@@ -38,7 +41,10 @@ namespace SWEN_Game
             tentativePositionReal = player.RealPos;
             tentativePosition.Y += moveDirection.Y * player.Speed * delta;
             tentativePositionReal.Y += moveDirection.Y * player.Speed * delta;
-            if (!Globals.IsColliding(tentativePosition, player.Texture))
+
+            Rectangle yCollision = new Rectangle((int)tentativePosition.X + 5, (int)tentativePosition.Y + 10, 8, 8);
+
+            if (!Globals.IsColliding(yCollision))
             {
                 player.SetPosition(tentativePosition, tentativePositionReal);
             }

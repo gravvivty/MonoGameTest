@@ -19,7 +19,6 @@ namespace SWEN_Game
         private float bulletDamage;
         private float timeSinceLastShot;
 
-        private Texture2D bulletTexture;
         */
 
         /*
@@ -30,12 +29,13 @@ namespace SWEN_Game
         */
 
         private List<Bullet> _bullets = new List<Bullet>();
-        private Weapon _currentWeapon;
+
         private float _timeSinceLastShot;
 
         public PlayerWeapon(WeaponManager weaponManager)
         {
-            this._currentWeapon = weaponManager.GetWeapon("Sniper");
+            PlayerGameData.bulletTexture = Globals.Content.Load<Texture2D>("Sprites/Bullets/FlameBullet");
+            PlayerGameData.bulletTint = Color.White;
         }
 
         protected float TimeSinceLastShot
@@ -61,10 +61,13 @@ namespace SWEN_Game
         public void Shoot(Vector2 direction, Vector2 player_position)
         {
             System.Diagnostics.Debug.WriteLine("PlayerWeapon is now Trying to shoot" + DateTime.Now);
-            if (TimeSinceLastShot >= _currentWeapon.attackSpeed)
+            if (TimeSinceLastShot >= PlayerGameData.currentWeapon.attackSpeed)
             {
+                // Clone bullet anim to make each bullet independent
+                Animation bulletAnim = new Animation(
+                    PlayerGameData.bulletTexture, 1, 4, 0.1f, Globals.SpriteManager, 1, PlayerGameData.bulletTint, PlayerGameData.currentWeapon.bulletSize);
                 // TODO: Direction calculated with bulletSpread factor
-                _bullets.Add(new Bullet(_currentWeapon.bulletTexture, player_position, direction, _currentWeapon.shotSpeed, _currentWeapon.bulletSize));
+                _bullets.Add(new Bullet(bulletAnim, player_position, direction, PlayerGameData.currentWeapon.shotSpeed, PlayerGameData.currentWeapon.bulletSize));
                 System.Diagnostics.Debug.WriteLine("PlayerWeapon is now shooting" + DateTime.Now);
                 TimeSinceLastShot = 0f;
             }

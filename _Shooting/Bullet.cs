@@ -14,13 +14,18 @@ namespace SWEN_Game
         private float _bulletSize;
         private bool _isVisible = true;
         private float _timer = 0f;
-        private float _visibilityTime = 0.5f;
-        private Texture2D _texture;
+        private float _visibilityTime = 1f;
 
-        public Bullet(Texture2D texture, Vector2 startposition, Vector2 direction, float shotSpeed, float bulletSize)
+        private Animation _animation;
+        private Rectangle bullet;
+
+        public Bullet(Animation animation, Vector2 startposition, Vector2 direction, float shotSpeed, float bulletSize)
         {
-            this._texture = texture;
-            _position = startposition;
+            _animation = animation;
+            _animation.Reset();
+            _animation.Start();
+            Vector2 origin = new Vector2(_animation.frameSize / 2f, _animation.frameSize / 2f);
+            _position = startposition - origin * (_animation._scale - 1f);
             _shotSpeed = Vector2.Normalize(direction) * shotSpeed;
             _bulletSize = bulletSize;
         }
@@ -28,10 +33,18 @@ namespace SWEN_Game
         public void Update()
         {
             _position += _shotSpeed * (float)Globals.Time;
+            bullet = new Rectangle((int)_position.X, (int)_position.Y, (int)_bulletSize, (int)_bulletSize);
             _timer += (float)Globals.Time;
+            _animation.Update();
             System.Diagnostics.Debug.WriteLine("Trying to update Bullet location" + DateTime.Now);
 
             if (_timer >= _visibilityTime)
+            {
+                _isVisible = false;
+                _timer = 0f;
+            }
+
+            if (Globals.IsColliding(bullet))
             {
                 _isVisible = false;
                 _timer = 0f;
@@ -42,7 +55,7 @@ namespace SWEN_Game
         {
             if (IsVisible)
             {
-                Globals.SpriteBatch.Draw(_texture, _position, new Rectangle(0, 0, 16, 16), Color.White, 0f, Vector2.Zero, _bulletSize, SpriteEffects.None, 1);
+                _animation.Draw(_position);
                 System.Diagnostics.Debug.WriteLine("Trying to draw the Bullet" + DateTime.Now);
             }
         }

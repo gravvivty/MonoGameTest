@@ -33,6 +33,9 @@ namespace SWEN_Game
 
             // Calculates ALL collisions in the level
             Globals.CalculateAllCollisions();
+
+            // Set Global Classes
+            Globals.SpriteManager = _spriteManager;
         }
 
         public void Update()
@@ -63,7 +66,7 @@ namespace SWEN_Game
 
             Globals.SpriteBatch.End();
 
-            //_debug.DrawWorldDebug();
+            _debug.DrawWorldDebug();
             Cursor.DrawCursor();
 
            // System.Diagnostics.Debug.WriteLine("GameManager Draw running" + DateTime.Now);

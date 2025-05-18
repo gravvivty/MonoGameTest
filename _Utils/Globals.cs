@@ -19,6 +19,7 @@ namespace SWEN_Game
         public static ContentManager Content { get; set; }
         public static GraphicsDeviceManager Graphics { get; set; }
         public static SpriteBatch SpriteBatch { get; set; }
+        public static SpriteManager SpriteManager { get; set; }
         public static Point WindowSize { get; set; } = new Point(1280, 720); // Default size
         public static LDtkFile File { get; set; }
         public static LDtkWorld World { get; set; }
@@ -63,19 +64,15 @@ namespace SWEN_Game
             }
         }
 
-        public static bool IsColliding(Vector2 pos, Texture2D texture)
+        public static bool IsColliding(Rectangle entityRect)
         {
-            if (texture == null)
+            if (entityRect == null)
             {
                 return false;
             }
 
             // Assumes entity collision as small rectangle at the very bottom of the Sprite
-            Rectangle entityRect = new Rectangle(
-                (int)pos.X + 5,
-                (int)pos.Y + 10,
-                texture.Width / 16,
-                texture.Height / 36);
+
             foreach (var rect in Collisions)
             {
                 if (entityRect.Intersects(rect))
