@@ -147,10 +147,10 @@ namespace SWEN_Game
                     anchorID = 348; // DESERT
                     break;
                 case "SmallGreenHouseDesert":
-                    anchorID = 41;
+                    anchorID = 101;
                     break;
                 case "BigGreenHouseDesert":
-                    anchorID = 101;
+                    anchorID = 345;
                     break;
                 case "MarketStandDesert":
                     anchorID = 462;

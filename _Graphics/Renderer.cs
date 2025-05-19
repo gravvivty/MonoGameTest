@@ -51,6 +51,8 @@ namespace SWEN_Game
 
                 // Retrieve the texture for this tileset.
                 Texture2D tilesetTexture = _spriteManager.GetTilesetTextureFromRenderer(level, layer._TilesetRelPath);
+                float renderRadius = 1000f; // 2000px total area (1000px in all directions)
+                Vector2 playerPos = _player.RealPos;
 
                 // Process each tile in the current layer.
                 foreach (var tile in layer.GridTiles)
@@ -58,6 +60,11 @@ namespace SWEN_Game
                     // Calculate the world position of the tile by applying layer offsets.
                     Vector2 position = new(tile.Px.X + layer._PxTotalOffsetX, tile.Px.Y + layer._PxTotalOffsetY);
                     Rectangle srcRect = new(tile.Src.X, tile.Src.Y, layer._GridSize, layer._GridSize);
+
+                    if (Vector2.DistanceSquared(position, playerPos) > renderRadius * renderRadius)
+                    {
+                        continue;
+                    }
 
                     // For background layers, draw with a forced depth of 0 (ensuring they render behind all other tiles).
                     if (isBackground)

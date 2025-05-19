@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assimp;
 using LDtk;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +11,7 @@ namespace SWEN_Game
     public class SpriteManager
     {
         private Dictionary<string, List<int>> tileMappings = new Dictionary<string, List<int>>();
-
+        private float maxY = 2000f;
         private Dictionary<string, Dictionary<int, List<Vector2>>> tileGroups = new();
 
         /*
@@ -68,53 +69,52 @@ namespace SWEN_Game
         // Spritelayers without anchor or out of Player Range
         public float GetDepth(Vector2 position, float spriteHeight, LayerInstance layer)
         {
-            float depth = 0.2f + ((position.Y + spriteHeight) / 1000f);
+            float depth = (position.Y + spriteHeight) / maxY;
             float layerOffset = 0;
 
             // low layerOffset --> Foreground
             switch (layer._Identifier)
             {
                 case "Deco_BigBackground":
-                    layerOffset = 8;
-                    break;
-                case "Deco_BigMiddleground":
-                    layerOffset = 6;
-                    break;
-                case "Deco_BigForeground":
                     layerOffset = 4;
                     break;
-                case "Deco_Small":
+                case "Deco_BigMiddleground":
+                    layerOffset = 3;
+                    break;
+                case "Deco_BigForeground":
                     layerOffset = 2;
+                    break;
+                case "Deco_Small":
+                    depth = 0.00015f;
                     break;
                 case "Deco_Small2":
-                    layerOffset = 2;
+                    depth = 0.00015f;
                     break;
                 case "Deco_SmallDesert":
-                    layerOffset = 2;
+                    depth = 0.0015f;
                     break;
                 case "Deco_Background":
-                    depth = 0.0001f;
+                    depth = 0.0000001f;
                     break;
                 case "Deco_Background2":
-                    depth = 0.0001f;
+                    depth = 0.0000001f;
                     break;
                 case "Background":
                     depth = 0f;
                     break;
                 case "Background2":
-                    depth = 0.000001f;
+                    depth = 0.0005f;
                     break;
             }
 
-            return depth - (layerOffset / 1000);
+            return depth - (layerOffset / maxY);
         }
 
         // Player or Anchor Depths
         public float GetDepth(Vector2 position, float spriteHeight)
         {
-            float depth = (position.Y + spriteHeight) / 1000f;
-
             // Using the bottom of the sprite as the reference
+            float depth = (position.Y + spriteHeight) / maxY;
             return depth;
         }
 
@@ -131,32 +131,11 @@ namespace SWEN_Game
                     layerOffset = 6;
                     break;
                 case "Deco_BigForeground":
-                    layerOffset = 1;
-                    break;
-                case "Deco_Small":
-                    layerOffset = 2;
-                    break;
-                case "Deco_Small2":
-                    layerOffset = 1;
-                    break;
-                case "Deco_SmallDesert":
-                    layerOffset = 1;
-                    break;
-                case "Deco_Background":
-                    depth = 0.0001f;
-                    break;
-                case "Deco_Background2":
-                    depth = 0.0001f;
-                    break;
-                case "Background":
-                    depth = 0f;
-                    break;
-                case "Background2":
-                    depth = 0f;
+                    layerOffset = 4;
                     break;
             }
 
-            return depth - (layerOffset / 1000);
+            return depth - (layerOffset / maxY);
         }
 
         public void MapTileToTexture()

@@ -66,7 +66,7 @@ namespace SWEN_Game
 
             Globals.SpriteBatch.End();
 
-            _debug.DrawWorldDebug();
+            //_debug.DrawWorldDebug();
             Cursor.DrawCursor();
 
            // System.Diagnostics.Debug.WriteLine("GameManager Draw running" + DateTime.Now);
