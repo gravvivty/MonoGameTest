@@ -34,8 +34,8 @@ namespace SWEN_Game
 
         public PlayerWeapon(WeaponManager weaponManager)
         {
-            PlayerGameData.bulletTexture = Globals.Content.Load<Texture2D>("Sprites/Bullets/FlameBullet");
-            PlayerGameData.bulletTint = Color.White;
+            PlayerGameData.BulletTexture = Globals.Content.Load<Texture2D>("Sprites/Bullets/FlameBullet");
+            PlayerGameData.BulletTint = Color.White;
         }
 
         protected float TimeSinceLastShot
@@ -43,6 +43,7 @@ namespace SWEN_Game
             get => _timeSinceLastShot;
             set => _timeSinceLastShot = value;
         }
+
         public List<Bullet> GetBullets() => _bullets;
 
         public void Update()
@@ -61,15 +62,31 @@ namespace SWEN_Game
         public void Shoot(Vector2 direction, Vector2 player_position)
         {
             System.Diagnostics.Debug.WriteLine("PlayerWeapon is now Trying to shoot" + DateTime.Now);
-            if (TimeSinceLastShot >= PlayerGameData.currentWeapon.attackSpeed)
+            if (TimeSinceLastShot >= PlayerGameData.CurrentWeapon.attackSpeed)
             {
                 // Clone bullet anim to make each bullet independent
                 Animation bulletAnim = new Animation(
-                    PlayerGameData.bulletTexture, 1, 4, 0.1f, Globals.SpriteManager, 1, PlayerGameData.bulletTint, PlayerGameData.currentWeapon.bulletSize);
+                    PlayerGameData.BulletTexture,
+                    1,
+                    4,
+                    0.1f,
+                    1,
+                    PlayerGameData.BulletTint,
+                    PlayerGameData.CurrentWeapon.bulletSize);
+
                 // TODO: Direction calculated with bulletSpread factor
-                _bullets.Add(new Bullet(bulletAnim, player_position, direction, PlayerGameData.currentWeapon.shotSpeed, PlayerGameData.currentWeapon.bulletSize));
+                _bullets.Add(new Bullet(bulletAnim, player_position, direction, PlayerGameData.CurrentWeapon.shotSpeed, PlayerGameData.CurrentWeapon.bulletSize));
                 System.Diagnostics.Debug.WriteLine("PlayerWeapon is now shooting" + DateTime.Now);
                 TimeSinceLastShot = 0f;
+            }
+        }
+
+        public void DrawBullets()
+        {
+
+            foreach (var bullet in GetBullets())
+            {
+                bullet.Draw(Globals.SpriteBatch);
             }
         }
     }

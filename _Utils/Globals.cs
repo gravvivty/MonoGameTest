@@ -66,11 +66,6 @@ namespace SWEN_Game
 
         public static bool IsColliding(Rectangle entityRect)
         {
-            if (entityRect == null)
-            {
-                return false;
-            }
-
             // Assumes entity collision as small rectangle at the very bottom of the Sprite
 
             foreach (var rect in Collisions)

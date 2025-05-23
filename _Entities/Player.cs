@@ -38,14 +38,14 @@ namespace SWEN_Game
             Texture = Globals.Content.Load<Texture2D>("player");
             _spriteManager = spriteManager;
 
-            _anims.AddAnimation(new Vector2(0, -1), new(Texture, 1, 3, 0.1f, _spriteManager, 1));
-            _anims.AddAnimation(new Vector2(1, -1), new(Texture, 1, 3, 0.1f, _spriteManager, 2));
-            _anims.AddAnimation(new Vector2(1, 0), new(Texture, 1, 3, 0.1f, _spriteManager, 3));
-            _anims.AddAnimation(new Vector2(1, 1), new(Texture, 1, 3, 0.1f, _spriteManager, 4));
-            _anims.AddAnimation(new Vector2(0, 1), new(Texture, 1, 3, 0.1f, _spriteManager, 5));
-            _anims.AddAnimation(new Vector2(-1, 1), new(Texture, 1, 3, 0.1f, _spriteManager, 6));
-            _anims.AddAnimation(new Vector2(-1, 0), new(Texture, 1, 3, 0.1f, _spriteManager, 7));
-            _anims.AddAnimation(new Vector2(-1, -1), new(Texture, 1, 3, 0.1f, _spriteManager, 8));
+            _anims.AddAnimation(new Vector2(0, -1), new(Texture, 1, 3, 0.1f, 1));
+            _anims.AddAnimation(new Vector2(1, -1), new(Texture, 1, 3, 0.1f, 2));
+            _anims.AddAnimation(new Vector2(1, 0), new(Texture, 1, 3, 0.1f, 3));
+            _anims.AddAnimation(new Vector2(1, 1), new(Texture, 1, 3, 0.1f, 4));
+            _anims.AddAnimation(new Vector2(0, 1), new(Texture, 1, 3, 0.1f, 5));
+            _anims.AddAnimation(new Vector2(-1, 1), new(Texture, 1, 3, 0.1f, 6));
+            _anims.AddAnimation(new Vector2(-1, 0), new(Texture, 1, 3, 0.1f, 7));
+            _anims.AddAnimation(new Vector2(-1, -1), new(Texture, 1, 3, 0.1f, 8));
         }
 
         public void SetPosition(Vector2 newPos, Vector2 newRealPos)

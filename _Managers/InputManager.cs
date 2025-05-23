@@ -29,7 +29,7 @@ namespace SWEN_Game
             tentativePosition.X += moveDirection.X * player.Speed * delta;
             tentativePositionReal.X += moveDirection.X * player.Speed * delta;
 
-            Rectangle xCollision = new Rectangle((int)tentativePosition.X + 5, (int)tentativePosition.Y + 10, 8, 8); ;
+            Rectangle xCollision = new Rectangle((int)tentativePosition.X + 5, (int)tentativePosition.Y + 10, 8, 8);
 
             if (!Globals.IsColliding(xCollision))
             {

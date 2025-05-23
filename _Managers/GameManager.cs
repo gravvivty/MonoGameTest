@@ -59,14 +59,12 @@ namespace SWEN_Game
                 transformMatrix: _renderer.CalcTranslation(),
                 samplerState: SamplerState.PointClamp);
             _renderer.DrawWorld();
-            foreach (var bullet in _playerWeapon.GetBullets())
-            {
-                bullet.Draw(Globals.SpriteBatch);
-            }
 
+            _playerWeapon.DrawBullets();
+            _player.Draw();
             Globals.SpriteBatch.End();
 
-            //_debug.DrawWorldDebug();
+            // _debug.DrawWorldDebug();
             Cursor.DrawCursor();
 
            // System.Diagnostics.Debug.WriteLine("GameManager Draw running" + DateTime.Now);

@@ -12,7 +12,7 @@ namespace SWEN_Game
         private object _currentKey;
         public AnimationManager()
         {
-            //dummy
+            // dummy
         }
 
         public void AddAnimation(object key, Animation animation)

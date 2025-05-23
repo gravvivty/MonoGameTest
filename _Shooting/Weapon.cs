@@ -18,8 +18,10 @@ namespace SWEN_Game
         public float timeSinceLastShot;
 
         public Texture2D bulletTexture;
+        public Texture2D ingameSprite;
+        public Texture2D iconSprite;
 
-        public Weapon(float attackspeed, float shotspeed, float bulletSize, float bulletSpread, int bulletsPerShot, float bulletDamage, Texture2D bulletTexture)
+        public Weapon(float attackspeed, float shotspeed, float bulletSize, float bulletSpread, int bulletsPerShot, float bulletDamage, Texture2D bulletTexture, Texture2D icon, Texture2D ingame)
         {
             this.attackSpeed = attackspeed;
             this.shotSpeed = shotspeed;
@@ -29,6 +31,8 @@ namespace SWEN_Game
             this.bulletDamage = bulletDamage;
 
             this.bulletTexture = bulletTexture;
+            this.ingameSprite = ingame;
+            this.iconSprite = icon;
         }
 
         /* protected float FireCooldown

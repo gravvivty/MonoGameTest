@@ -97,8 +97,6 @@ namespace SWEN_Game
                     }
                 }
             }
-
-            _player.Draw();
         }
 
         public Matrix CalcTranslation()

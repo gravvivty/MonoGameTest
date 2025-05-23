@@ -19,16 +19,24 @@ namespace SWEN_Game
         {
             // Pistol
             Texture2D vanillaBulletTexture = Globals.Content.Load<Texture2D>("Sprites/Bullets/VanillaBullet");
-            Weapon pistol = new Weapon(0.3f, 250f, 1f, 1, 1, 1, vanillaBulletTexture);
+
+            Texture2D pistolIconTexture = Globals.Content.Load<Texture2D>("Sprites/Guns/Guns_UI/pistol");
+            Texture2D pistolIngameTexture = Globals.Content.Load<Texture2D>("Sprites/Guns/Guns_Ingame/pistol");
+            Weapon pistol = new Weapon(0.5f, 300f, 1f, 1, 1, 8f, vanillaBulletTexture, pistolIconTexture, pistolIngameTexture);
             _weapons.Add("Pistol", pistol);
 
-            Weapon smg = new Weapon(0.1f, 400f, 0.5f, 1, 1, 1, vanillaBulletTexture);
-            _weapons.Add("SMG", smg);
+            Texture2D assaultRifleIconTexture = Globals.Content.Load<Texture2D>("Sprites/Guns/Guns_UI/assault_rifle");
+            Texture2D assaultIngameTexture = Globals.Content.Load<Texture2D>("Sprites/Guns/Guns_Ingame/assault_rifle");
+            Weapon assault_rifle = new Weapon(0.2f, 300f, 0.7f, 1, 1, 2.5f, vanillaBulletTexture, assaultRifleIconTexture, assaultIngameTexture);
+            _weapons.Add("Assault_Rifle", assault_rifle);
 
-            Weapon sniper = new Weapon(0.8f, 600f, 0.4f, 1, 1, 1, vanillaBulletTexture);
-            _weapons.Add("Sniper", sniper);
+            Texture2D precisionRifleIconTexture = Globals.Content.Load<Texture2D>("Sprites/Guns/Guns_UI/precision_rifle");
+            Texture2D precisionRifleIngameTexture = Globals.Content.Load<Texture2D>("Sprites/Guns/Guns_Ingame/precision_rifle");
+            Weapon precision_rifle = new Weapon(0.8f, 500f, 0.7f, 1, 1, 16f, vanillaBulletTexture, precisionRifleIconTexture, precisionRifleIconTexture);
+            _weapons.Add("Precision_Rifle", precision_rifle);
 
-            PlayerGameData.baseWeapon = this.GetWeapon("Pistol");
+            PlayerGameData.BaseWeapon = this.GetWeapon("Pistol");
+            PlayerGameData.CurrentWeapon = PlayerGameData.BaseWeapon;
             PlayerGameData.UpdatePlayerGameData();
         }
 
